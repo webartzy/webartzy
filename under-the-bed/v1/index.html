@@ -1,0 +1,452 @@
+<title>Under the Bed (first pass)</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+12&family=VT323&display=swap">
+<style>
+/* layout: one dark column. a thin bar, the pixel room filling what is left, a caption strip under it. */
+:root{
+  color-scheme:dark;
+  --ink:#0B0B0D; --bone:#E8E2D6; --blood:#8B0A1A; --gold:#C9A227;
+  --bone-dim:#8f8a80; --ink-soft:#1a1819;
+  --display:"Jacquard 12","UnifrakturCook","Times New Roman",serif;
+  --text:"VT323","Courier New",ui-monospace,monospace;
+  --u:3px;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--ink);color:var(--bone);font-family:var(--text);font-size:18px;overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+#app{height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding-block:8px}
+#bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none}
+#bar .name{font-family:var(--display);font-size:26px;line-height:1;color:var(--bone)}
+.switch{display:flex;border:1px solid var(--bone-dim)}
+.switch button{font:inherit;font-size:16px;letter-spacing:.06em;line-height:1;padding:7px 9px;border:0;background:var(--ink);color:var(--bone-dim);cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--bone);color:var(--ink)}
+.switch button:focus-visible,#begin:focus-visible,.card:focus-visible,#frame:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#stage{flex:1;min-height:0;display:flex;align-items:flex-end;justify-content:center}
+#frame{position:relative;flex:none;outline:1px solid var(--ink-soft);touch-action:none;cursor:none}
+#c{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+#cards{position:absolute;left:3%;right:3%;bottom:2%;display:grid;grid-template-columns:repeat(3,1fr);gap:3%;align-items:end;cursor:default}
+.card{font:inherit;font-size:clamp(13px,calc(var(--u)*5.2),24px);line-height:.95;text-align:left;color:var(--ink);background:var(--bone);
+  border:0;box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*1.6) var(--blood);padding:calc(var(--u)*2) calc(var(--u)*2.5);min-height:calc(var(--u)*21);
+  cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:calc(var(--u)*2);min-width:0;overflow-wrap:anywhere;
+  animation:deal .5s steps(5) both}
+.card:nth-child(1){transform:rotate(-3deg)}
+.card:nth-child(2){transform:translateY(calc(var(--u)*-3)) rotate(1deg);animation-delay:.12s}
+.card:nth-child(3){transform:rotate(3deg);animation-delay:.24s}
+.card i{display:block;width:calc(var(--u)*4);height:calc(var(--u)*4);background:var(--blood);flex:none}
+.card:hover,.card:focus-visible{background:#fff8ea;box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*2.2) var(--gold)}
+@keyframes deal{from{opacity:0;translate:0 calc(var(--u)*8)}to{opacity:1;translate:0 0}}
+#start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*4);
+  background:var(--ink);text-align:center;cursor:default;padding:8%}
+#start h1{font-family:var(--display);font-weight:400;font-size:calc(var(--u)*22);line-height:.9;margin:0;text-wrap:balance}
+#start p{margin:0;color:var(--bone-dim);font-size:clamp(15px,calc(var(--u)*6),24px);line-height:1;max-width:22em}
+#begin{font:inherit;font-size:clamp(17px,calc(var(--u)*7),28px);line-height:1;color:var(--ink);background:var(--gold);border:0;padding:.45em .8em;cursor:pointer;
+  box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*1.6) var(--gold)}
+#caption{flex:none;height:4.1em;font-size:clamp(19px,4.6vw,27px);line-height:1;display:flex;align-items:center;justify-content:center;text-align:center;
+  max-width:34em;width:100%;margin-inline:auto}
+#caption .w{opacity:.14;transition:opacity .08s}
+#caption .w.on{opacity:1}
+#caption.hint{color:var(--bone-dim)}
+#foot{flex:none;display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--bone-dim);letter-spacing:.04em;line-height:1}
+#note{color:var(--gold);min-width:0}
+@media (prefers-reduced-motion:reduce){.card{animation:none}#caption .w{transition:none}}
+</style>
+
+<div id="app">
+  <div id="bar">
+    <span class="name">Under the Bed</span>
+    <div class="switch" role="group" aria-label="sound mode">
+      <button id="m-beeps" type="button" aria-pressed="true">BEEPS</button>
+      <button id="m-el" type="button" aria-pressed="false">ELEVENLABS</button>
+    </div>
+  </div>
+  <div id="stage">
+    <div id="frame" tabindex="0" aria-label="a dark bedroom. move your flashlight under the bed, then press the eyes.">
+      <canvas id="c" width="160" height="150"></canvas>
+      <div id="cards" hidden></div>
+      <div id="start">
+        <h1>Under the Bed</h1>
+        <p>something lives down there. he only wants to tell you a story.</p>
+        <button id="begin" type="button">switch on the flashlight</button>
+      </div>
+    </div>
+  </div>
+  <div id="caption" class="hint" aria-live="polite"></div>
+  <div id="foot"><span id="note"></span><span>built with claude + elevenlabs mcp</span></div>
+</div>
+
+<script>
+(() => {
+'use strict';
+/* ───────────── text (approved) ───────────── */
+const STORIES = [
+ {id:'mirror', obj:'mirror', title:'the mirror that kept faces',
+  text:"a mirror in the hall kept every face it was shown. the vain, the tired, the ones only checking their teeth. it pressed them behind the glass like flowers. one night a girl looked in and saw nothing. the mirror had no face of its own. so she drew one with her finger. it is still smiling, crookedly."},
+ {id:'candle', obj:'candle', title:'the candle who was afraid of the dark',
+  text:"a candle was afraid of the dark, which is awkward in a candle. every night it burned as hard as it could, and every night it grew a little shorter. at last it was only a puddle with a wick. it went out. and the dark, who had been waiting years to say so, whispered: thank you for the company."},
+ {id:'musicbox', obj:'musicbox', title:'the music box at 3am',
+  text:"every night at three, the music box played by itself. the family blamed the cat, then the pipes, then each other. the boy stayed up to catch the ghost. the lid opened. the little dancer turned once, looked at him, and yawned. she was not haunted. she was practising. the daytime, she explained, has far too many critics."},
+ {id:'ghosts', obj:'painting', title:'the girl who painted ghosts',
+  text:"a girl painted ghosts, because nobody else would sit still for her. pale ladies. a sailor, still dripping. a dog made of fog. she hung them in the cold corridor, and each morning one more frame was empty. she was not frightened. she had only wanted them to feel at home. now someone always leaves the kettle warm."},
+ {id:'door', obj:'door', title:'the door with no room behind it',
+  text:"at the top of the stairs stood a door with no room behind it. open it, and there was only wall. still, every night, someone knocked from the other side. politely. three times. one night the boy knocked back. a pause. then a small voice said: oh, good. i was starting to think i was the one who wasn't there."},
+ {id:'attic', obj:'bear', title:'the last toy in the attic',
+  text:"the last toy in the attic was a bear with one eye and no name. the others had been carried downstairs, loved, and lost. he waited forty years in the dust. then the hatch opened, and an old man climbed up, slowly. he was not looking for a toy. he was looking for the only one who remembered him small."}
+];
+const INTROS = [
+ "oh. you found me. don't scream, it's rude. pick a story.",
+ "yes, i live down here. the rent is reasonable. choose one.",
+ "i'm not here to scare you. i'm too tired. three stories. take one."
+];
+const NIGHTS = [
+ "that's all. close your eyes. i'll keep watch on the dust.",
+ "goodnight. if something creaks, it's only me, getting comfortable.",
+ "sleep now. i'll be underneath, as usual. someone has to be."
+];
+/* ElevenLabs assets are embedded here once generated: name -> data URI, plus word timings per voice line. */
+const ASSETS = {};
+const EL_READY = Object.keys(ASSETS).length > 0;
+
+/* ───────────── palette: tints of ink, bone, blood, gold only ───────────── */
+const P = {
+ ink:'#0B0B0D', ink2:'#151315', ink3:'#221f1f', ink4:'#3d3733', ink5:'#5e554d',
+ bone:'#E8E2D6', bone2:'#b9b3a8', bone3:'#7d776f', white:'#f5f1e9',
+ red:'#8B0A1A', red2:'#5c0711', red3:'#36060c',
+ gold:'#C9A227', gold2:'#8a6f1a', gold3:'#4a3d1e', goldhi:'#e6cf7a',
+ wood:'#2a2317', wood2:'#3f3420', wood3:'#5a4a26',
+ skin:'#E8E2D6', skin2:'#c9c0b2', lid:'#d3c8ba', blush:'#dcbdb1', nose:'#cf9f96', ring:'#a58d86', freck:'#b89a8c',
+ hair:'#3d3733', hair2:'#5e554d', hair3:'#26221f', shirt:'#5d564f', shirt2:'#39332f'
+};
+const W = 160, H = 150;
+const $ = id => document.getElementById(id);
+const cv = $('c'), ctx = cv.getContext('2d');
+const mk = (w,h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+const room = mk(W,H), dark = mk(W,H), toy = mk(64,76);
+const rg = room.getContext('2d'), dg = dark.getContext('2d'), tg = toy.getContext('2d');
+const R = (g,x,y,w,h,c) => { g.fillStyle = c; g.fillRect(Math.round(x),Math.round(y),w,h); };
+const px = (g,x,y,c) => R(g,x,y,1,1,c);
+function ell(g,cx,cy,rx,ry,c){ g.fillStyle = c;
+  for(let dy=-Math.ceil(ry); dy<=Math.ceil(ry); dy++){ const k = 1-(dy*dy)/(ry*ry); if(k<0) continue;
+    const w = Math.round(rx*Math.sqrt(k)); g.fillRect(Math.round(cx-w),Math.round(cy+dy),w*2+1,1); } }
+function line(g,x0,y0,x1,y1,c,th=1){ const n = Math.max(Math.abs(x1-x0),Math.abs(y1-y0))||1;
+  for(let i=0;i<=n;i++) R(g,x0+(x1-x0)*i/n-(th>>1),y0+(y1-y0)*i/n-(th>>1),th,th,c); }
+const hash = n => { const s = Math.sin(n*127.1)*43758.5453; return s-Math.floor(s); };
+const lerp = (a,b,k) => a+(b-a)*k, clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const ease = k => k<.5 ? 2*k*k : 1-Math.pow(-2*k+2,2)/2;
+
+/* where each story's object sits in the room */
+const OBJ = { mirror:[98,33], candle:[48,70], musicbox:[60,75], painting:[131,30], door:[14,68], bear:[91,50] };
+const GAP = {x:80,y:84,w:72,h:26};
+const TOY = {x:114,y:100};
+
+/* ───────────── the room (drawn once) ───────────── */
+function drawRoom(g){
+  R(g,0,0,W,H,P.ink2);
+  for(let y=4;y<100;y+=8) for(let x=(y%16?2:6);x<W;x+=8){ px(g,x,y,P.ink3); px(g,x-1,y+1,P.ink3); px(g,x+1,y+1,P.ink3); px(g,x,y+2,P.ink3); }
+  R(g,0,100,W,4,P.ink3); R(g,0,100,W,1,P.ink4);
+  // floor boards
+  R(g,0,104,W,46,'#1d1917');
+  [104,109,116,125,136].forEach((y,i) => { R(g,0,y,W,1,P.ink);
+    for(let x=(i*37)%50+8;x<W;x+=58) R(g,x,y,1,[5,7,9,11,14][i],P.ink); });
+  for(let i=0;i<40;i++) px(g,hash(i)*W,106+hash(i+9)*42,P.ink3);
+  // rug
+  R(g,14,121,112,26,P.red3); R(g,16,123,108,22,P.red2); R(g,18,125,104,18,P.red3);
+  for(let x=20;x<120;x+=6){ px(g,x,127,P.gold3); px(g,x+3,140,P.gold3); px(g,x+1,133,P.red2); px(g,x+2,134,P.red2); }
+  for(let y=122;y<147;y+=2){ px(g,12,y,P.bone3); px(g,13,y,P.bone3); px(g,126,y,P.bone3); px(g,127,y,P.bone3); }
+  // door
+  R(g,3,35,22,65,P.ink4); R(g,5,37,18,63,P.ink3);
+  R(g,7,40,14,24,P.ink2); R(g,8,41,12,22,P.ink3); R(g,7,68,14,28,P.ink2); R(g,8,69,12,26,P.ink3);
+  R(g,20,66,2,2,P.gold); px(g,20,69,P.gold2);
+  // window
+  R(g,33,18,30,48,P.ink4); R(g,35,20,26,44,P.ink);
+  [[38,24],[57,23],[41,50],[55,45],[37,38]].forEach(([x,y]) => px(g,x,y,P.bone3));
+  ell(g,52,31,5,5,P.bone); px(g,50,29,P.bone2); px(g,54,33,P.bone2); px(g,53,30,P.bone2);
+  line(g,35,48,46,38,P.ink3); line(g,46,38,60,34,P.ink3); line(g,44,40,48,28,P.ink3); line(g,52,36,58,42,P.ink3); line(g,40,43,36,34,P.ink3);
+  R(g,47,20,2,44,P.ink4); R(g,35,41,26,2,P.ink4); R(g,33,65,30,2,P.ink5);
+  R(g,28,16,40,1,P.gold2);
+  for(let i=0;i<7;i++){ R(g,29+i,17,1,54-(i%3),i%2?P.red3:P.red2); R(g,60+i,17,1,54-(i%3),i%2?P.red2:P.red3); }
+  // nightstand
+  R(g,37,80,30,2,P.wood3); R(g,39,82,26,20,P.wood); R(g,41,85,22,7,P.wood2); R(g,51,88,2,1,P.gold2);
+  R(g,40,102,2,2,P.wood2); R(g,62,102,2,2,P.wood2);
+  for(let x=42;x<54;x+=2){ px(g,x,82,P.bone2); px(g,x+1,83,P.bone2); }
+  // candle and holder
+  R(g,45,78,7,2,P.gold2); R(g,46,77,5,1,P.gold); R(g,47,71,3,6,P.bone); px(g,49,72,P.bone2); px(g,49,74,P.bone2); px(g,48,70,P.ink);
+  // music box
+  R(g,56,75,9,5,P.red2); R(g,56,75,9,1,P.gold2); R(g,56,79,9,1,P.gold3); px(g,60,77,P.gold);
+  R(g,56,71,9,1,P.gold2); R(g,64,71,1,4,P.gold3);
+  px(g,60,72,P.bone); R(g,59,73,3,1,P.bone); px(g,60,74,P.bone2);
+  // mirror
+  ell(g,98,33,8,11,P.gold2); ell(g,98,33,6,9,P.ink3); line(g,95,29,99,25,P.ink4); line(g,97,34,101,30,P.ink4);
+  px(g,98,21,P.gold); px(g,98,45,P.gold);
+  // painting
+  R(g,120,20,22,20,P.gold2); R(g,122,22,18,16,P.ink3);
+  ell(g,131,29,3,4,P.bone3); R(g,128,31,7,5,P.bone3); px(g,130,28,P.ink); px(g,132,28,P.ink); px(g,128,36,P.ink3); px(g,131,36,P.ink3); px(g,134,36,P.ink3);
+  // bed: pillow, blanket, lace hem, posts, the dark underneath
+  R(g,80,58,72,26,P.red3);
+  ell(g,141,56,10,4,P.bone2); R(g,132,57,19,3,P.bone3);
+  for(let x=80;x<152;x++){ const top = 58+Math.round(Math.sin(x*.35)*.8); R(g,x,top,1,80-top,(x>>2)%2?P.red2:P.red3); }
+  for(let x=83;x<150;x+=7){ px(g,x,64,P.gold3); px(g,x+3,71,P.gold3); px(g,x+1,76,P.red); }
+  R(g,80,80,72,2,P.bone2);
+  for(let x=80;x<152;x++){ const s = x%4; R(g,x,82,1,s===1||s===2?2:1,P.bone); if(s===0) px(g,x,81,P.bone3); }
+  R(g,GAP.x,GAP.y,GAP.w,GAP.h,P.ink);
+  R(g,74,42,6,68,P.wood2); R(g,74,42,2,68,P.wood3); R(g,73,48,8,3,P.wood3); R(g,73,76,8,3,P.wood3); ell(g,77,39,3,3,P.wood3);
+  R(g,152,36,8,74,P.wood2); R(g,152,36,2,74,P.wood3); R(g,151,44,9,3,P.wood3); R(g,151,78,9,3,P.wood3); ell(g,156,33,3,3,P.wood3);
+  // the bear on the bed, one eye
+  ell(g,91,53,5,5,P.gold2); ell(g,91,45,4,4,P.gold2); px(g,87,42,P.gold2); px(g,88,41,P.gold2); px(g,94,41,P.gold2); px(g,95,42,P.gold2);
+  ell(g,91,47,2,1,P.wood3); px(g,91,46,P.ink); px(g,89,44,P.ink); px(g,93,44,P.gold3); px(g,92,45,P.gold3);
+  R(g,90,52,3,3,P.wood3); R(g,86,57,3,2,P.gold3); R(g,94,57,3,2,P.gold3);
+}
+drawRoom(rg);
+
+/* ───────────── toyhead ───────────── */
+const STRANDS = [[-18,-10,-1,-.3,6],[-17,-4,-1,.5,6],[-19,2,-.6,1,6],[-14,-18,-.8,-1,6],[-8,-21,-.4,-1,6],[-2,-22,.1,-1,5],[5,-22,.5,-1,6],
+ [11,-20,.9,-.9,6],[16,-15,1,-.5,7],[19,-8,1,.1,6],[18,-1,1,.6,6],[20,4,.5,1,5],[-21,-14,-1,-.6,5],[14,-21,.3,-1,4],[-11,-22,-.2,-1,4]];
+function eye(g,ex,ey,lidRow,look,closed){
+  ell(g,ex,ey+1,6,5,P.ring);
+  for(let dy=-4;dy<=4;dy++){ const w = Math.round(5*Math.sqrt(1-(dy*dy)/16));
+    R(g,ex-w,ey+dy,w*2+1,1,(closed||dy<lidRow)?P.lid:P.white); }
+  if(closed){ R(g,ex-4,ey+2,9,1,P.ink4); return; }
+  R(g,ex-1+look,ey-1,3,3,P.gold); px(g,ex+look,ey,P.ink); px(g,ex-1+look,ey-1,P.goldhi);
+  for(let dy=-1;dy<lidRow;dy++) R(g,ex-1+look,ey+dy,3,1,P.lid);
+  const w = Math.round(5*Math.sqrt(1-(lidRow*lidRow)/16)); R(g,ex-w,ey+lidRow,w*2+1,1,P.ink4);
+}
+function drawToy(g,t,s){
+  g.clearRect(0,0,64,76);
+  const cx = 32, cy = 28;
+  ell(g,cx,cy-9,20,13,P.hair); ell(g,cx-13,cy-2,7,9,P.hair); ell(g,cx+13,cy-2,7,9,P.hair);
+  STRANDS.forEach(([x,y,dx,dy,n],k) => { for(let i=0;i<n;i++) R(g,cx+x+dx*i,cy+y+dy*i,2,2,(i+k)%3===0?P.hair2:P.hair); });
+  // body: striped pyjama shirt, blood-red waistcoat, gold buttons
+  for(let x=-9;x<9;x++) R(g,cx+x,cy+19,1,17,(x&2)?P.shirt:P.shirt2);
+  R(g,cx-11,cy+20,6,16,P.red2); R(g,cx+5,cy+20,6,16,P.red2); R(g,cx-6,cy+21,1,15,P.red); R(g,cx+5,cy+21,1,15,P.red);
+  [23,27,31].forEach(y => px(g,cx,cy+y,P.gold));
+  // planted arm, waving arm
+  line(g,cx-11,cy+22,cx-16,cy+30,P.shirt,4); line(g,cx-16,cy+30,cx-18,cy+37,P.shirt2,4); R(g,cx-20,cy+35,5,1,P.shirt);
+  ell(g,cx-19,cy+40,4,2,P.skin); px(g,cx-23,cy+41,P.skin2); px(g,cx-20,cy+42,P.skin2); px(g,cx-17,cy+42,P.skin2);
+  const wv = s.wave ? Math.round(Math.sin(t*6)*2) : 0;
+  line(g,cx+11,cy+22,cx+18,cy+26,P.shirt,4); line(g,cx+18,cy+26,cx+22+wv,cy+17,P.shirt2,4); R(g,cx+20+wv,cy+16,5,1,P.shirt);
+  R(g,cx+20+wv,cy+10,5,6,P.skin); [0,2,4].forEach(i => R(g,cx+20+wv+i,cy+7,1,3,P.skin)); px(g,cx+19+wv,cy+12,P.skin); px(g,cx+25+wv,cy+12,P.skin2);
+  R(g,cx-2,cy+14,5,6,P.skin2); R(g,cx-5,cy+18,4,2,P.bone3); R(g,cx+2,cy+18,4,2,P.bone3);
+  // head
+  ell(g,cx-17,cy+4,3,4,P.skin2); ell(g,cx+17,cy+4,3,4,P.skin2); px(g,cx-18,cy+4,P.ring); px(g,cx+18,cy+4,P.ring);
+  ell(g,cx,cy+2,16,14,P.skin2); ell(g,cx,cy+1,16,13,P.skin);
+  ell(g,cx-11,cy+9,2,1,P.blush); ell(g,cx+11,cy+9,2,1,P.blush);
+  [[-12,6],[-9,11],[-13,10],[10,6],[13,9],[8,11],[-3,5],[3,6],[-6,12],[6,13],[-1,-4],[4,-6]].forEach(([x,y]) => px(g,cx+x,cy+y,P.freck));
+  // brows: thin, high, a little sorry
+  line(g,cx-13,cy-6,cx-10,cy-8,P.ink3); R(g,cx-10,cy-8,6,1,P.ink3); px(g,cx-4,cy-7,P.ink3);
+  line(g,cx+13,cy-6,cx+10,cy-8,P.ink3); R(g,cx+5,cy-8,6,1,P.ink3); px(g,cx+4,cy-7,P.ink3);
+  const look = s.look|0;
+  eye(g,cx-7,cy+2,s.blink?9:0,look,s.blink); eye(g,cx+7,cy+2,s.blink?9:-1,look,s.blink);
+  R(g,cx-1,cy+7,2,2,P.nose);
+  // the small crooked smile
+  R(g,cx-4,cy+11,8,1,P.ink4); px(g,cx-5,cy+10,P.ink4); px(g,cx+4,cy+10,P.ink4); px(g,cx+5,cy+9,P.ink4);
+  if(s.talk) R(g,cx-2,cy+11,4,2,P.red3);
+  // the stitched seam on his forehead
+  R(g,cx+10,cy-11,1,6,P.ink4); [-10,-8,-6].forEach(y => { px(g,cx+9,cy+y,P.ink4); px(g,cx+11,cy+y,P.ink4); });
+  // fringe of yarn
+  [[-13,3],[-10,5],[-7,3],[-3,6],[1,3],[4,5],[7,2],[13,4],[-15,6]].forEach(([x,n],k) => { for(let i=0;i<n;i++) R(g,cx+x+(i>3?1:0),cy-14+i,2,1,(i+k)%3===0?P.hair2:P.hair); });
+}
+
+/* ───────────── sound: BEEPS (oscillators) / ELEVENLABS (assets) ───────────── */
+const Snd = (() => {
+  let ac = null, out = null, mode = 'beeps', timers = {}, story = null;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  function init(){ if(ac || !AC) return; ac = new AC(); out = ac.createGain(); out.gain.value = 1; out.connect(ac.destination); }
+  function tone(f,d,o={}){ if(!ac) return; const t0 = ac.currentTime+(o.t||0), os = ac.createOscillator(), g = ac.createGain();
+    os.type = o.type||'sine'; os.frequency.setValueAtTime(f,t0); if(o.f2) os.frequency.exponentialRampToValueAtTime(o.f2,t0+d);
+    g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(o.g||.15,t0+(o.a||.008)); g.gain.exponentialRampToValueAtTime(.0005,t0+d);
+    os.connect(g); g.connect(out); os.start(t0); os.stop(t0+d+.05); }
+  const N = {A3:220,E3:164.8,F3:174.6,D3:146.8,G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,F4:349.2,Gs4:415.3,
+             A5:880,C6:1046.5,E6:1318.5,Gs5:830.6,B5:987.8,D6:1174.7};
+  const beeps = {
+    click(){ tone(1900,.03,{type:'square',g:.16}); tone(900,.04,{type:'square',g:.1,t:.03}); },
+    creak(){ tone(96,.5,{type:'sawtooth',f2:150,g:.13,a:.1}); tone(150,.4,{type:'sawtooth',f2:84,g:.1,t:.45,a:.05}); },
+    slideOut(){ tone(90,1.2,{type:'triangle',f2:180,g:.3,a:.2}); },
+    slideBack(){ tone(180,1.2,{type:'triangle',f2:85,g:.3,a:.2}); },
+    blip(i){ tone(190+hash(i)*70,.08,{type:'triangle',g:.22}); },
+    deal(){ [0,.12,.24].forEach((t,i) => tone(520+i*90,.05,{type:'square',g:.04,t})); },
+    knock(){ [0,.22,.44].forEach(t => tone(120,.08,{type:'square',g:.08,t})); }
+  };
+  const LULL = ['A4',0,'C5','E5',0,'D5','C5',0,'B4','A4',0,0,'F4',0,'A4','C5',0,'B4','A4',0,'Gs4','A4',0,0];
+  const BASS = ['A3','A3','E3','A3','F3','F3','E3','A3'];
+  const BOX = ['E6','C6','A5','C6','E6','D6','B5','Gs5','A5','C6','E6','C6','B5','Gs5','A5',0];
+  function every(name,ms,fn){ stopLoop(name); fn(0); let i = 1; timers[name] = setInterval(() => fn(i++),ms); }
+  function stopLoop(name){ if(timers[name]){ clearInterval(timers[name]); delete timers[name]; } }
+  const loops = {
+    lullaby(){ every('lullaby',560,i => { const n = LULL[i%LULL.length]; if(n) tone(N[n],.9,{type:'triangle',g:story?.09:.07,a:.03});
+      if(i%3===0) tone(N[BASS[(i/3|0)%BASS.length]]/2,1.5,{g:story?.1:.07,a:.05}); }); },
+    wind(){ every('wind',2600,i => tone(190+hash(i)*90,2.6,{f2:170+hash(i+3)*120,g:.035,a:1.1})); },
+    heartbeat(){ every('heartbeat',1050,() => { tone(90,.16,{f2:50,g:.3}); tone(80,.14,{f2:46,g:.22,t:.2}); }); },
+    musicbox(){ every('musicbox',300,i => { const n = BOX[i%BOX.length]; if(n) tone(N[n],.5,{g:.05,a:.004}); }); },
+    candle(){ every('candle',170,i => { if(hash(i*3.1)>.6) tone(2400+hash(i)*900,.02,{type:'triangle',g:.025}); }); }
+  };
+  return {
+    init, get mode(){ return mode; }, get ready(){ return !!ac; },
+    setMode(m){ mode = m; },
+    sfx(name,arg){ if(!ac) return; (beeps[name]||(()=>{}))(arg); },
+    loop(name,on){ if(!ac) return; if(on) loops[name](); else stopLoop(name); },
+    setStory(s){ story = s; },
+    resume(){ if(ac && ac.state==='suspended') ac.resume(); }
+  };
+})();
+
+/* ───────────── state ───────────── */
+const S = { phase:'title', lx:40, ly:60, slide:0, eyes:0, eyesSince:0, talk:false, wave:false, story:null, storyT:0, seen:[], run:0, lastCreak:0 };
+const cap = $('caption'), cards = $('cards'), note = $('note');
+const wait = ms => new Promise(r => setTimeout(r,ms));
+const pick = a => a[Math.random()*a.length|0];
+function hint(t){ cap.className = 'hint'; cap.textContent = t; }
+
+/* captions: one sentence-sized chunk at a time, words lit as he says them */
+function chunks(text){ const parts = text.match(/[^.?!:]+[.?!:]+/g) || [text], out = [];
+  for(const p of parts.map(s => s.trim())){ if(out.length && (out[out.length-1]+' '+p).length < 46) out[out.length-1] += ' '+p; else out.push(p); }
+  return out; }
+async function speak(text){
+  const run = S.run; let n = 0;
+  for(const c of chunks(text)){
+    cap.className = ''; cap.textContent = '';
+    const line = document.createElement('span');
+    const spans = c.split(' ').map(w => { const s = document.createElement('span'); s.className = 'w'; s.textContent = w+' '; line.appendChild(s); return s; });
+    cap.appendChild(line);
+    for(const s of spans){ if(run!==S.run) return;
+      s.classList.add('on'); S.talk = true; Snd.sfx('blip',n++);
+      const w = s.textContent.trim(); await wait(120+w.length*38); S.talk = false;
+      await wait(/[.?!:]$/.test(w) ? 420 : /,$/.test(w) ? 200 : 40); }
+    await wait(380);
+  }
+}
+async function tween(to,ms){ const from = S.slide, t0 = performance.now();
+  return new Promise(r => { (function step(){ const k = clamp((performance.now()-t0)/ms,0,1); S.slide = lerp(from,to,ease(k)); k<1 ? requestAnimationFrame(step) : r(); })(); }); }
+
+async function call(){
+  if(S.phase!=='dark') return; S.phase = 'coming'; const run = ++S.run;
+  hint(''); Snd.sfx('creak'); await wait(350); Snd.sfx('slideOut'); S.wave = true;
+  await tween(1,1500); await wait(250);
+  await speak(pick(INTROS)); if(run!==S.run) return;
+  S.wave = false; deal();
+}
+function deal(){
+  const fresh = STORIES.filter(s => !S.seen.includes(s.id)); if(fresh.length<3) S.seen = [];
+  const pool = (fresh.length>=3 ? fresh : STORIES).slice().sort(() => Math.random()-.5).slice(0,3);
+  cards.textContent = '';
+  pool.forEach(s => { const b = document.createElement('button'); b.type = 'button'; b.className = 'card';
+    b.appendChild(document.createElement('i')); b.appendChild(document.createTextNode(s.title));
+    b.addEventListener('click',() => tell(s)); cards.appendChild(b); });
+  cards.hidden = false; S.phase = 'cards'; Snd.sfx('deal'); hint('pick a story from the floor.');
+}
+async function tell(s){
+  if(S.phase!=='cards') return; S.phase = 'story'; const run = ++S.run;
+  cards.hidden = true; S.seen.push(s.id); S.story = s; S.storyT = performance.now();
+  Snd.setStory(s); Snd.loop('heartbeat',true); Snd.loop('candle',true); if(s.id==='musicbox') Snd.loop('musicbox',true);
+  if(s.id==='door') Snd.sfx('knock');
+  await wait(500); await speak(s.text); if(run!==S.run) return;
+  Snd.loop('heartbeat',false); Snd.loop('candle',false); Snd.loop('musicbox',false); Snd.setStory(null); S.story = null;
+  await wait(500); await speak(pick(NIGHTS)); if(run!==S.run) return;
+  await wait(300); Snd.sfx('slideBack'); await tween(0,1400); Snd.sfx('creak');
+  S.phase = 'dark'; S.eyes = 0; hint('he is back under the bed. shine your light to call him again.');
+}
+
+/* ───────────── input ───────────── */
+const frame = $('frame');
+function toScene(e){ const r = cv.getBoundingClientRect(); return [clamp((e.clientX-r.left)/r.width*W,0,W), clamp((e.clientY-r.top)/r.height*H,0,H)]; }
+const overEyes = (x,y) => x>GAP.x-4 && x<GAP.x+GAP.w+4 && y>GAP.y-6 && y<GAP.y+GAP.h+8;
+let downSaw = false;
+frame.addEventListener('pointermove',e => { if(S.phase==='title') return; [S.lx,S.ly] = toScene(e); });
+frame.addEventListener('pointerdown',e => { if(S.phase==='title' || e.target.closest('#cards')) return;
+  downSaw = S.eyes>.6; [S.lx,S.ly] = toScene(e); Snd.resume(); });
+frame.addEventListener('pointerup',e => { if(S.phase!=='dark' || e.target.closest('#cards')) return;
+  const [x,y] = toScene(e); if(downSaw && overEyes(x,y)) call(); else Snd.sfx('click'); });
+frame.addEventListener('keydown',e => { if(e.key!=='Enter' && e.key!==' ') return; if(e.target!==frame || S.phase!=='dark') return; e.preventDefault();
+  if(S.eyes>.6) call(); else { S.lx = TOY.x; S.ly = 96; Snd.sfx('click'); } });
+$('begin').addEventListener('click',() => {
+  Snd.init(); Snd.resume(); $('start').hidden = true; S.phase = 'dark'; S.lx = 48; S.ly = 60;
+  Snd.sfx('click'); Snd.loop('lullaby',true); Snd.loop('wind',true); S.lastCreak = performance.now();
+  hint('it is very quiet. shine your light under the bed.'); frame.focus({preventScroll:true});
+});
+const mB = $('m-beeps'), mE = $('m-el');
+function setMode(m){
+  mB.setAttribute('aria-pressed',m==='beeps'); mE.setAttribute('aria-pressed',m==='el');
+  Snd.setMode(m);
+  note.textContent = (m==='el' && !EL_READY) ? 'elevenlabs audio is not recorded yet. playing beeps for now.' : '';
+}
+mB.addEventListener('click',() => setMode('beeps')); mE.addEventListener('click',() => setMode('el'));
+
+/* ───────────── render ───────────── */
+function hole(g,x,y,r,a){ g.globalAlpha = a; ell(g,x,y,r,r,'#000'); g.globalAlpha = 1; }
+function halo(x,y,r,c,a){ ctx.globalAlpha = a; ell(ctx,x,y,r,r,c); ctx.globalAlpha = 1; }
+const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function draw(now){
+  const t = now/1000, st = S.story, inStory = !!st;
+  const fl = calm ? .5 : hash(Math.floor(t*(inStory?11:7)));          // candle flicker, stepped
+  ctx.drawImage(room,0,0);
+
+  // shadows that move while he talks
+  if(inStory){ ctx.fillStyle = 'rgba(11,11,13,.5)';
+    for(let i=0;i<3;i++){ const x = ((t*7+i*75)%230)-40; for(let y=0;y<100;y+=4) ctx.fillRect(Math.round(x+y*.35+Math.sin(t+i)*3),y,12+i*3,4); }
+    const sway = Math.round(Math.sin(t*1.3)*2); line(ctx,66,30+sway,84,22-sway,'rgba(11,11,13,.6)',2); line(ctx,72,27+sway,78,36,'rgba(11,11,13,.6)'); }
+
+  // candle flame
+  const fx = 48+(fl>.8?1:fl<.15?-1:0), tall = inStory && fl>.5 ? 5 : 4, fc = st && st.obj==='candle';
+  R(ctx,47,70-tall+1,3,tall-1,fc?P.red:P.gold); R(ctx,fx,70-tall,1,2,fc?P.gold:P.goldhi); px(ctx,48,69,P.goldhi);
+
+  // story object, lit from inside
+  if(inStory){ const [ox,oy] = OBJ[st.obj], k = (now-S.storyT)/1000;
+    if(st.obj==='mirror'){ ell(ctx,98,33,6,9,P.red3); if(k>18){ px(ctx,96,30,P.bone); px(ctx,100,30,P.bone); R(ctx,96,36,4,1,P.bone); px(ctx,95,35,P.bone); px(ctx,100,35,P.bone); px(ctx,101,34,P.bone); } }
+    if(st.obj==='musicbox'){ const a = Math.floor(t*3)%4; px(ctx,60,72,P.bone); R(ctx,59,73,3,1,P.ink2); px(ctx,[59,60,61,60][a],73,P.bone); px(ctx,60,73,P.bone); R(ctx,56,75,9,1,P.gold); }
+    if(st.obj==='painting'){ const gone = Math.sin(t*.8)>.2; if(gone){ R(ctx,122,22,18,16,P.red3); } else { px(ctx,130,28,P.red); px(ctx,132,28,P.red); } }
+    if(st.obj==='door'){ R(ctx,25,37,1,63,P.red); R(ctx,5,99,18,1,P.red); if(Math.floor(t*2)%5===0) R(ctx,20,66,2,2,P.goldhi); }
+    if(st.obj==='bear'){ px(ctx,89,44,P.red); R(ctx,90,52,3,3,P.red2); }
+  }
+
+  // toyhead, sliding out from under the lace
+  if(S.slide>.01){
+    drawToy(tg,t,{ talk:S.talk && Math.floor(t*9)%2===0, blink:(t%3.7)<.14, wave:S.wave, look:S.phase==='cards'?-1:0 });
+    ctx.save(); ctx.beginPath(); ctx.rect(0,GAP.y,W,H-GAP.y); ctx.clip();
+    ctx.globalAlpha = clamp(S.slide*1.3,0,1);
+    ctx.drawImage(toy,TOY.x-32,Math.round(TOY.y-28+lerp(-12,8,S.slide)));
+    ctx.restore();
+  }
+
+  // darkness, with holes punched by the flashlight, the candle, and his face
+  dg.globalCompositeOperation = 'source-over'; dg.clearRect(0,0,W,H);
+  dg.globalAlpha = S.phase==='title' ? 1 : inStory ? .76+fl*.08 : .84; dg.fillStyle = P.ink; dg.fillRect(0,0,W,H); dg.globalAlpha = 1;
+  dg.globalCompositeOperation = 'destination-out';
+  const cr = (inStory?19:11)+Math.round(fl*3);
+  hole(dg,48,68,cr,.3); hole(dg,48,68,cr-5,.45); hole(dg,48,68,cr-8,.8);
+  if(S.phase!=='title'){ const lx = Math.round(S.lx), ly = Math.round(S.ly);
+    hole(dg,lx,ly,29,.3); hole(dg,lx,ly,24,.5); hole(dg,lx,ly,18,1); }
+  if(S.slide>.01){ hole(dg,TOY.x,TOY.y+12,36,.35*S.slide); hole(dg,TOY.x,TOY.y+10,28,.85*S.slide); }
+  if(inStory){ const [ox,oy] = OBJ[st.obj]; hole(dg,ox,oy,15,.4); hole(dg,ox,oy,10,.8); }
+  ctx.drawImage(dark,0,0);
+
+  // warm and red light on top
+  halo(48,68,cr-4,P.gold,.05+fl*.03);
+  if(inStory){ const [ox,oy] = OBJ[st.obj], p = .5+.5*Math.sin(t*2.6);
+    halo(ox,oy,16,P.red,.1+.1*p); halo(ox,oy,10,P.red,.14+.12*p); }
+
+  // two eyes in the dark
+  const lit = S.phase==='dark' && overEyes(S.lx,S.ly);
+  S.eyes = clamp(S.eyes+(lit?.07:-.12),0,1);
+  if(S.phase==='dark' && S.eyes>.05){
+    const bl = (t%2.9)<.13 || ((t+1.3)%7.1)<.12, open = bl ? 0 : S.eyes;
+    const look = clamp(Math.round((S.lx-TOY.x)/14),-1,1), ey = TOY.y-28-12+30;
+    [-7,7].forEach(dx => { const ex = TOY.x+dx;
+      if(open<.3){ R(ctx,ex-3,ey+1,7,1,P.bone3); return; }
+      const top = open<.7 ? 1 : 0;
+      for(let dy=top;dy<=3;dy++){ const w = Math.round(5*Math.sqrt(1-(dy*dy)/16)); R(ctx,ex-w,ey+dy,w*2+1,1,P.bone); }
+      R(ctx,ex-1+look,ey+top,3,3-top,P.gold); px(ctx,ex+look,ey+1,P.ink); });
+  }
+  // an idle creak now and then, so the bed gives itself away
+  if(S.phase==='dark' && now-S.lastCreak>16000){ S.lastCreak = now; Snd.sfx('creak'); }
+  requestAnimationFrame(draw);
+}
+
+/* ───────────── fit ───────────── */
+function fit(){ const st = $('stage'), k = Math.min(st.clientWidth/W, st.clientHeight/H); if(!(k>0)) return;
+  const s = k>=3 ? Math.floor(k*2)/2 : k;
+  frame.style.width = (W*s)+'px'; frame.style.height = (H*s)+'px'; document.documentElement.style.setProperty('--u',s+'px'); }
+window.addEventListener('resize',fit); new ResizeObserver(fit).observe($('stage')); fit();
+requestAnimationFrame(draw);
+window.__utb = { S, call, tell, STORIES };
+})();
+</script>
