@@ -251,7 +251,7 @@ function drawToy(g,t,s){
 const Snd = (() => {
   let ac = null, out = null, mode = 'beeps', timers = {}, story = null;
   const AC = window.AudioContext || window.webkitAudioContext;
-  function init(){ if(ac || !AC) return; ac = new AC(); out = ac.createGain(); out.gain.value = .7; out.connect(ac.destination); }
+  function init(){ if(ac || !AC) return; ac = new AC(); out = ac.createGain(); out.gain.value = 1; out.connect(ac.destination); }
   function tone(f,d,o={}){ if(!ac) return; const t0 = ac.currentTime+(o.t||0), os = ac.createOscillator(), g = ac.createGain();
     os.type = o.type||'sine'; os.frequency.setValueAtTime(f,t0); if(o.f2) os.frequency.exponentialRampToValueAtTime(o.f2,t0+d);
     g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(o.g||.15,t0+(o.a||.008)); g.gain.exponentialRampToValueAtTime(.0005,t0+d);
@@ -259,11 +259,11 @@ const Snd = (() => {
   const N = {A3:220,E3:164.8,F3:174.6,D3:146.8,G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,F4:349.2,Gs4:415.3,
              A5:880,C6:1046.5,E6:1318.5,Gs5:830.6,B5:987.8,D6:1174.7};
   const beeps = {
-    click(){ tone(1900,.03,{type:'square',g:.08}); tone(900,.04,{type:'square',g:.05,t:.03}); },
-    creak(){ tone(96,.5,{type:'sawtooth',f2:150,g:.05,a:.1}); tone(150,.4,{type:'sawtooth',f2:84,g:.04,t:.45,a:.05}); },
-    slideOut(){ tone(60,1.2,{type:'triangle',f2:110,g:.16,a:.2}); },
-    slideBack(){ tone(110,1.2,{type:'triangle',f2:55,g:.16,a:.2}); },
-    blip(i){ tone(150+hash(i)*50,.07,{type:'triangle',g:.13}); },
+    click(){ tone(1900,.03,{type:'square',g:.16}); tone(900,.04,{type:'square',g:.1,t:.03}); },
+    creak(){ tone(96,.5,{type:'sawtooth',f2:150,g:.13,a:.1}); tone(150,.4,{type:'sawtooth',f2:84,g:.1,t:.45,a:.05}); },
+    slideOut(){ tone(90,1.2,{type:'triangle',f2:180,g:.3,a:.2}); },
+    slideBack(){ tone(180,1.2,{type:'triangle',f2:85,g:.3,a:.2}); },
+    blip(i){ tone(190+hash(i)*70,.08,{type:'triangle',g:.22}); },
     deal(){ [0,.12,.24].forEach((t,i) => tone(520+i*90,.05,{type:'square',g:.04,t})); },
     knock(){ [0,.22,.44].forEach(t => tone(120,.08,{type:'square',g:.08,t})); }
   };
@@ -273,12 +273,12 @@ const Snd = (() => {
   function every(name,ms,fn){ stopLoop(name); fn(0); let i = 1; timers[name] = setInterval(() => fn(i++),ms); }
   function stopLoop(name){ if(timers[name]){ clearInterval(timers[name]); delete timers[name]; } }
   const loops = {
-    lullaby(){ every('lullaby',560,i => { const n = LULL[i%LULL.length]; if(n) tone(N[n],.9,{type:'triangle',g:story?.05:.028,a:.03});
-      if(i%3===0) tone(N[BASS[(i/3|0)%BASS.length]]/2,1.5,{g:story?.06:.03,a:.05}); }); },
-    wind(){ every('wind',2600,i => tone(190+hash(i)*90,2.6,{f2:170+hash(i+3)*120,g:.012,a:1.1})); },
-    heartbeat(){ every('heartbeat',1050,() => { tone(62,.16,{f2:40,g:.2}); tone(56,.14,{f2:38,g:.14,t:.2}); }); },
+    lullaby(){ every('lullaby',560,i => { const n = LULL[i%LULL.length]; if(n) tone(N[n],.9,{type:'triangle',g:story?.09:.07,a:.03});
+      if(i%3===0) tone(N[BASS[(i/3|0)%BASS.length]]/2,1.5,{g:story?.1:.07,a:.05}); }); },
+    wind(){ every('wind',2600,i => tone(190+hash(i)*90,2.6,{f2:170+hash(i+3)*120,g:.035,a:1.1})); },
+    heartbeat(){ every('heartbeat',1050,() => { tone(90,.16,{f2:50,g:.3}); tone(80,.14,{f2:46,g:.22,t:.2}); }); },
     musicbox(){ every('musicbox',300,i => { const n = BOX[i%BOX.length]; if(n) tone(N[n],.5,{g:.05,a:.004}); }); },
-    candle(){ every('candle',170,i => { if(hash(i*3.1)>.6) tone(2400+hash(i)*900,.02,{type:'triangle',g:.008}); }); }
+    candle(){ every('candle',170,i => { if(hash(i*3.1)>.6) tone(2400+hash(i)*900,.02,{type:'triangle',g:.025}); }); }
   };
   return {
     init, get mode(){ return mode; }, get ready(){ return !!ac; },
