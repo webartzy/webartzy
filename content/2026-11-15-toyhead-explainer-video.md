@@ -42,19 +42,21 @@
 Flow خودش حرف می‌زند تا حس و ریتم طبیعی باشد؛ بعد صدا را خودت با ElevenLabs جایگزین می‌کنی. اول شیت چهره را در Characters آپلود کن، بعد این را بفرست:
 
 ```
-Redo the setup still and the clips. The previous still was wrong: a flat, front-on webcam shot with him facing the camera straight on. NEVER film him straight on from the front. Every shot is from the side, with a clear angle, lens and light as described below.
+Update: keep the side camera angles of the last still, but change his outfit and make everything look more natural and human, not like a polished AI render. NEVER film him straight on from the front. Every shot is from the side, with a clear angle, lens and light as described below.
 
 Create 6 short vertical video clips (9:16, 1080x1920) of the man in my attached face sheet. He SPEAKS the lines below out loud with natural lip movement, in English, in a calm, dry, slightly tired, deadpan voice, at an unhurried pace, with the pauses marked by "...". Record clean close-mic speech only: no background music, no sound effects, no subtitles, no captions, no on-screen text.
 
 First make one still of the first shot and show it to me. Only after I approve it, animate the clips.
 
-PERSON: The man in the attached reference sheet (front, smiling, serious, three-quarter and profile views of the same person). Keep his face, short black quiff hairstyle, full thick black beard, black round-rectangular glasses and skin tone exactly the same in every clip. Do not beautify or change his face. He wears a plain dark grey crew-neck sweater.
+PERSON: The man in the attached reference sheet (front, smiling, serious, three-quarter and profile views of the same person). Keep his face, short black quiff hairstyle, full thick black beard, black round-rectangular glasses and skin tone exactly the same in every clip. Do not beautify or change his face. He wears a simple gothic outfit: a plain matte black high-collar long-sleeve knit top, slightly worn, no logos, no patterns, no jewellery.
+
+HUMAN LOOK: It must look like real phone footage of a real person, not a polished AI render. Natural skin with visible pores, fine lines, slight oiliness and uneven tone; no airbrushing, no beauty filter, no plastic or waxy skin. Beard hairs and a few flyaway strands of hair slightly out of place. Slightly asymmetrical, imperfect expressions. Shot like a modern phone camera in low light: natural grain, slight softness, real motion blur, 24 fps, a very subtle natural handheld sway even on the locked-off shots. Natural breathing, irregular blinks, a small swallow, a tiny hesitation before a line. Realistic hands with exactly five fingers each.
 
 ROOM MAP (keep identical in every shot): He sits at a wooden desk. An open laptop faces him, its screen glowing softly on his face. A warm gold desk lamp stands on his right side. Behind him, deep in the dark, is the edge of an unmade bed with a dark red blanket. Night. Palette: ink black, bone white, deep blood red, candle gold. No blue or purple tint.
 
 LIGHT: Low-key and moody. The gold lamp is the key light and makes a warm rim along his beard and nose. The laptop adds a soft fill on his face. Deep black shadows everywhere else. Film grain, shallow depth of field.
 
-PERFORMANCE: Relaxed, dry humour. Small natural movements only: blinks, small nods, a tiny smirk, an eyebrow raise. No big gestures. He looks at the laptop most of the time and turns to the camera only where written.
+PERFORMANCE: Relaxed, dry humour, conversational like talking to a friend, never like an announcer or a presenter. Small natural movements only: blinks, small nods, a tiny smirk, an eyebrow raise. No big gestures. He looks at the laptop most of the time and turns to the camera only where written. Do not add or change any word of the lines.
 
 CLIPS (he says each line exactly as written):
 1. (8s) CAMERA: three-quarter view from his front-left at 45 degrees, 50mm, medium close-up, slow dolly-in. He is looking at the laptop, then turns his head to the camera, a tiny smirk, and says: "I built a monster that lives under your bed. He doesn't scare you... He tells you gothic bedtime stories."
