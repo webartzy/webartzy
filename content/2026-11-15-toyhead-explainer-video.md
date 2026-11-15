@@ -42,25 +42,27 @@
 Flow خودش حرف می‌زند تا حس و ریتم طبیعی باشد؛ بعد صدا را خودت با ElevenLabs جایگزین می‌کنی. اول شیت چهره را در Characters آپلود کن، بعد این را بفرست:
 
 ```
-Create 6 short vertical video clips (9:16, 1080x1920) of the man in my attached face sheet, talking to the camera. He SPEAKS the lines below out loud with natural lip movement, in English, in a calm, dry, slightly tired, deadpan voice, at an unhurried pace, with the pauses marked by "...". Record clean close-mic speech only: no background music, no sound effects, no subtitles, no captions, no on-screen text.
+Redo the setup still and the clips. The previous still was wrong: a flat, front-on webcam shot with him facing the camera straight on. NEVER film him straight on from the front. Every shot is from the side, with a clear angle, lens and light as described below.
 
-First make one still frame of the setup and show it to me. Only after I approve it, animate the clips.
+Create 6 short vertical video clips (9:16, 1080x1920) of the man in my attached face sheet. He SPEAKS the lines below out loud with natural lip movement, in English, in a calm, dry, slightly tired, deadpan voice, at an unhurried pace, with the pauses marked by "...". Record clean close-mic speech only: no background music, no sound effects, no subtitles, no captions, no on-screen text.
 
-PERSON: The man in the attached reference sheet (front, smiling, serious and side views of the same person). Keep his face, short black quiff hairstyle, full thick black beard, black round-rectangular glasses and skin tone exactly the same in every clip. Do not beautify or change his face. He wears a plain dark grey crew-neck sweater.
+First make one still of the first shot and show it to me. Only after I approve it, animate the clips.
 
-SETTING: He sits behind a wooden desk in a dark room at night. A warm gold desk lamp is the only light, softly lighting one side of his face. A laptop is open on the desk, its screen glow barely visible at the bottom of the frame. Behind him, out of focus, the edge of an unmade bed with a dark red blanket. Palette: ink black, bone white, deep blood red, candle gold. No blue or purple tint.
+PERSON: The man in the attached reference sheet (front, smiling, serious, three-quarter and profile views of the same person). Keep his face, short black quiff hairstyle, full thick black beard, black round-rectangular glasses and skin tone exactly the same in every clip. Do not beautify or change his face. He wears a plain dark grey crew-neck sweater.
 
-CAMERA: Close-up, chest-up, eye level, like a webcam selfie video, locked off. Identical framing, lighting, room and starting pose in all six clips so they cut together cleanly. No zooms, no camera moves.
+ROOM MAP (keep identical in every shot): He sits at a wooden desk. An open laptop faces him, its screen glowing softly on his face. A warm gold desk lamp stands on his right side. Behind him, deep in the dark, is the edge of an unmade bed with a dark red blanket. Night. Palette: ink black, bone white, deep blood red, candle gold. No blue or purple tint.
 
-PERFORMANCE: Relaxed, dry humour, speaking straight to camera. Small natural movements only: blinks, small nods, a tiny smirk, an eyebrow raise. No big gestures.
+LIGHT: Low-key and moody. The gold lamp is the key light and makes a warm rim along his beard and nose. The laptop adds a soft fill on his face. Deep black shadows everywhere else. Film grain, shallow depth of field.
+
+PERFORMANCE: Relaxed, dry humour. Small natural movements only: blinks, small nods, a tiny smirk, an eyebrow raise. No big gestures. He looks at the laptop most of the time and turns to the camera only where written.
 
 CLIPS (he says each line exactly as written):
-1. (8s) A calm look into the camera, a small nod, a tiny smirk, then he says: "I built a monster that lives under your bed. He doesn't scare you... He tells you gothic bedtime stories."
-2. (8s) He raises one finger as if counting, then a dry shrug and a half smile, and says: "First version: Claude Fable on its own. A flashlight, six stories, one sad monster. It worked... It also beeped."
-3. (8s) He glances aside for a moment, then back to camera with a small amused smile, and says: "Then I plugged in the Eleven Labs M C P and gave him my voice. A clone of me, reading every story."
-4. (8s) He counts quickly on his fingers, one eyebrow lifts at the end, and he says: "Twenty-one audio files, one take each. A creaking bed, a heartbeat, a lullaby... Even the captions follow his voice."
-5. (4s) He tilts his head toward the left of the frame with a look that says "go ahead", and says: "Watch both."
-6. (4s) He leans slightly toward the camera with a warm half smile, and says: "Which one would you let under your bed?"
+1. (8s) CAMERA: three-quarter view from his front-left at 45 degrees, 50mm, medium close-up, slow dolly-in. He is looking at the laptop, then turns his head to the camera, a tiny smirk, and says: "I built a monster that lives under your bed. He doesn't scare you... He tells you gothic bedtime stories."
+2. (8s) CAMERA: full profile from his right, 85mm close-up, locked off. The gold lamp is a blurred glow in the foreground, the laptop light on his face. He looks at the screen, raises one finger as if counting, a dry shrug, and says: "First version: Claude Fable on its own. A flashlight, six stories, one sad monster. It worked... It also beeped."
+3. (8s) CAMERA: low angle from desk level, front-left at 30 degrees, 35mm, the edge of the laptop blurred in the foreground, locked off. He glances aside for a moment, then to the camera with a small amused smile, and says: "Then I plugged in the Eleven Labs M C P and gave him my voice. A clone of me, reading every story."
+4. (8s) CAMERA: tight three-quarter close-up from his left, 85mm, locked off, his fingers visible at the bottom of the frame. He counts quickly on his fingers, one eyebrow lifts at the end, and he says: "Twenty-one audio files, one take each. A creaking bed, a heartbeat, a lullaby... Even the captions follow his voice."
+5. (4s) CAMERA: wide side-on shot from his left, 35mm, the whole desk, the laptop, him and the dark bed behind, locked off. He turns his head to the camera and tilts it toward the left of the frame with a look that says "go ahead", and says: "Watch both."
+6. (4s) CAMERA: three-quarter view from his right, 50mm, slow dolly-in to a medium close-up. He looks at the camera with a warm half smile, holds eye contact for a beat at the end, and says: "Which one would you let under your bed?"
 ```
 
 - «Eleven Labs M C P» با فاصله نوشته شده تا Flow درست تلفظ کند. روی تصویر همان `ElevenLabs MCP` می‌ماند.
