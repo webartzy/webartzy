@@ -1,14 +1,14 @@
 <title>Under the Bed</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+12&family=VT323&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pirata+One&display=swap">
 <style>
-/* layout: one dark column. a thin bar, the pixel room filling what is left, a caption strip under it. */
+/* layout: one dark column. a thin bar, the painted room filling what is left, a caption strip under it. */
 :root{
   color-scheme:dark;
   --ink:#0B0B0D; --bone:#E8E2D6; --blood:#8B0A1A; --gold:#C9A227;
   --bone-dim:#8f8a80; --ink-soft:#1a1819;
-  --display:"Jacquard 12","UnifrakturCook","Times New Roman",serif;
-  --text:"VT323","Courier New",ui-monospace,monospace;
+  --display:"Pirata One","UnifrakturCook","Times New Roman",serif;
+  --text:"IM Fell English","Iowan Old Style",Georgia,serif;
   --u:3px;
 }
 [hidden]{display:none!important}
@@ -18,38 +18,48 @@ body{background:var(--ink);color:var(--bone);font-family:var(--text);font-size:1
   -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 #app{height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding-block:8px}
 #bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none}
-#bar .name{font-family:var(--display);font-size:26px;line-height:1;color:var(--bone)}
-.switch{display:flex;border:1px solid var(--bone-dim)}
-.switch button{font:inherit;font-size:16px;letter-spacing:.06em;line-height:1;padding:7px 9px;border:0;background:var(--ink);color:var(--bone-dim);cursor:pointer}
+#bar .name{font-family:var(--display);font-size:27px;line-height:1;color:var(--bone)}
+.switch{display:flex;border:1px solid var(--bone-dim);border-radius:2px;overflow:hidden}
+.switch button{font:inherit;font-size:13px;letter-spacing:.12em;line-height:1;padding:8px 9px;border:0;background:var(--ink);color:var(--bone-dim);cursor:pointer}
 .switch button[aria-pressed="true"]{background:var(--bone);color:var(--ink)}
 .switch button:focus-visible,#begin:focus-visible,.card:focus-visible,#frame:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #stage{flex:1;min-height:0;display:flex;align-items:flex-end;justify-content:center}
-#frame{position:relative;flex:none;outline:1px solid var(--ink-soft);touch-action:none;cursor:none}
-#c{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
-#cards{position:absolute;left:3%;right:3%;bottom:2%;display:grid;grid-template-columns:repeat(3,1fr);gap:3%;align-items:end;cursor:default}
-.card{font:inherit;font-size:clamp(13px,calc(var(--u)*5.2),24px);line-height:.95;text-align:left;color:var(--ink);background:var(--bone);
-  border:0;box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*1.6) var(--blood);padding:calc(var(--u)*2) calc(var(--u)*2.5);min-height:calc(var(--u)*21);
+#frame{position:relative;flex:none;touch-action:none;cursor:none;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px var(--ink-soft)}
+#c{display:block;width:100%;height:100%}
+#cards{position:absolute;left:4%;right:4%;bottom:3%;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3%;align-items:end;cursor:default}
+.card{font:inherit;font-style:italic;font-size:clamp(14px,calc(var(--u)*5.4),25px);line-height:1.02;text-align:left;color:var(--ink);
+  background:linear-gradient(160deg,#f1ebdf,#d9d1c2 70%,#c5bcab);border:0;border-radius:2px;
+  box-shadow:0 calc(var(--u)*1) calc(var(--u)*3) rgba(0,0,0,.7),inset 0 0 0 1px rgba(11,11,13,.25);
+  padding:calc(var(--u)*2.4) calc(var(--u)*2.6);min-height:calc(var(--u)*22);
   cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:calc(var(--u)*2);min-width:0;overflow-wrap:anywhere;
-  animation:deal .5s steps(5) both}
+  animation:deal .6s cubic-bezier(.2,.8,.3,1) both}
 .card:nth-child(1){transform:rotate(-3deg)}
 .card:nth-child(2){transform:translateY(calc(var(--u)*-3)) rotate(1deg);animation-delay:.12s}
 .card:nth-child(3){transform:rotate(3deg);animation-delay:.24s}
-.card i{display:block;width:calc(var(--u)*4);height:calc(var(--u)*4);background:var(--blood);flex:none}
-.card:hover,.card:focus-visible{background:#fff8ea;box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*2.2) var(--gold)}
-@keyframes deal{from{opacity:0;translate:0 calc(var(--u)*8)}to{opacity:1;translate:0 0}}
+.card i{display:block;width:calc(var(--u)*4.4);height:calc(var(--u)*4.4);border-radius:50%;flex:none;
+  background:radial-gradient(circle at 35% 30%,#b3192c,var(--blood) 55%,#4d0610)}
+.card:hover,.card:focus-visible{background:linear-gradient(160deg,#fff8ea,#eadfc9);box-shadow:0 calc(var(--u)*1) calc(var(--u)*4) rgba(0,0,0,.8),0 0 0 2px var(--gold)}
+@keyframes deal{from{opacity:0;translate:0 calc(var(--u)*10)}to{opacity:1;translate:0 0}}
 #start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*4);
-  background:var(--ink);text-align:center;cursor:default;padding:8%}
-#start h1{font-family:var(--display);font-weight:400;font-size:calc(var(--u)*22);line-height:.9;margin:0;text-wrap:balance}
-#start p{margin:0;color:var(--bone-dim);font-size:clamp(15px,calc(var(--u)*6),24px);line-height:1;max-width:22em}
-#begin{font:inherit;font-size:clamp(17px,calc(var(--u)*7),28px);line-height:1;color:var(--ink);background:var(--gold);border:0;padding:.45em .8em;cursor:pointer;
-  box-shadow:0 0 0 var(--u) var(--ink),0 0 0 calc(var(--u)*1.6) var(--gold)}
-#caption{flex:none;height:4.1em;font-size:clamp(19px,4.6vw,27px);line-height:1;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(circle at 50% 62%,#1d1712,var(--ink) 62%);text-align:center;cursor:default;padding:8%}
+#start h1{font-family:var(--display);font-weight:400;font-size:calc(var(--u)*24);line-height:.9;margin:0;text-wrap:balance}
+#start p{margin:0;color:var(--bone-dim);font-style:italic;font-size:clamp(16px,calc(var(--u)*6),25px);line-height:1.1;max-width:22em}
+#begin{font:inherit;font-size:clamp(17px,calc(var(--u)*6.4),27px);line-height:1;color:var(--ink);background:var(--gold);border:0;border-radius:2px;padding:.5em .9em;cursor:pointer}
+#begin:disabled{opacity:.6}
+#caption{flex:none;height:4.3em;font-size:clamp(19px,4.6vw,26px);line-height:1.08;display:flex;align-items:center;justify-content:center;text-align:center;
   max-width:34em;width:100%;margin-inline:auto}
-#caption .w{opacity:.14;transition:opacity .08s}
+#caption .w{opacity:.16;transition:opacity .12s}
 #caption .w.on{opacity:1}
-#caption.hint{color:var(--bone-dim)}
-#foot{flex:none;display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--bone-dim);letter-spacing:.04em;line-height:1}
-#note{color:var(--gold);min-width:0}
+#caption.hint{color:var(--bone-dim);font-style:italic}
+#caption .it{white-space:nowrap}
+#caption .it.done{color:var(--gold);text-decoration:line-through;text-decoration-color:var(--blood)}
+#caption .lead{color:var(--bone)}
+#foot{flex:none;display:flex;justify-content:space-between;align-items:center;gap:12px;white-space:nowrap;font-size:13px;color:var(--bone-dim);letter-spacing:.04em;line-height:1}
+#note{min-width:0;display:flex;align-items:center;gap:8px}
+#nights{display:flex;gap:4px}
+#nights b{width:7px;height:7px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--bone-dim)}
+#nights b.told{background:var(--blood);box-shadow:none}
+#nights b.now{box-shadow:inset 0 0 0 1px var(--gold);background:rgba(201,162,39,.35)}
 @media (prefers-reduced-motion:reduce){.card{animation:none}#caption .w{transition:none}}
 </style>
 
@@ -58,22 +68,22 @@ body{background:var(--ink);color:var(--bone);font-family:var(--text);font-size:1
     <span class="name">Under the Bed</span>
     <div class="switch" role="group" aria-label="sound mode">
       <button id="m-beeps" type="button" aria-pressed="false">BEEPS</button>
-      <button id="m-el" type="button" aria-pressed="false">ELEVENLABS</button>
+      <button id="m-el" type="button" aria-pressed="true">ELEVENLABS</button>
     </div>
   </div>
   <div id="stage">
     <div id="frame" tabindex="0" aria-label="a dark bedroom. move your flashlight under the bed, then press the eyes.">
-      <canvas id="c" width="160" height="150"></canvas>
+      <canvas id="c"></canvas>
       <div id="cards" hidden></div>
       <div id="start">
         <h1>Under the Bed</h1>
-        <p>something lives down there. he only wants to tell you a story.</p>
+        <p>six nights. six stories. something under the bed wants you to find a few things first.</p>
         <button id="begin" type="button">switch on the flashlight</button>
       </div>
     </div>
   </div>
   <div id="caption" class="hint" aria-live="polite"></div>
-  <div id="foot"><span id="note"></span><span>built with claude + elevenlabs mcp</span></div>
+  <div id="foot"><span id="note"><span id="nights" aria-hidden="true"></span><span id="status"></span></span><span>built with claude + elevenlabs mcp</span></div>
 </div>
 
 <script>
@@ -116,136 +126,199 @@ const P = {
  red:'#8B0A1A', red2:'#5c0711', red3:'#36060c',
  gold:'#C9A227', gold2:'#8a6f1a', gold3:'#4a3d1e', goldhi:'#e6cf7a',
  wood:'#2a2317', wood2:'#3f3420', wood3:'#5a4a26',
- skin:'#E8E2D6', skin2:'#c9c0b2', lid:'#d3c8ba', blush:'#dcbdb1', nose:'#cf9f96', ring:'#a58d86', freck:'#b89a8c',
- hair:'#3d3733', hair2:'#5e554d', hair3:'#26221f', shirt:'#5d564f', shirt2:'#39332f'
+ skin:'#E8E2D6', skin2:'#c9c0b2', skin3:'#a89f92', lid:'#d3c8ba', blush:'#d9a79b', ring:'#8d7670', freck:'#b08f80',
+ hair:'#3d3733', hair2:'#5e554d', hair3:'#26221f', shirt:'#6a625a', shirt2:'#39332f'
 };
-const W = 160, H = 150;
+const W = 160, H = 150, TAU = Math.PI*2;
 const $ = id => document.getElementById(id);
 const cv = $('c'), ctx = cv.getContext('2d');
 const mk = (w,h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
-const room = mk(W,H), dark = mk(W,H), toy = mk(64,76);
-const rg = room.getContext('2d'), dg = dark.getContext('2d'), tg = toy.getContext('2d');
-const R = (g,x,y,w,h,c) => { g.fillStyle = c; g.fillRect(Math.round(x),Math.round(y),w,h); };
-const px = (g,x,y,c) => R(g,x,y,1,1,c);
-function ell(g,cx,cy,rx,ry,c){ g.fillStyle = c;
-  for(let dy=-Math.ceil(ry); dy<=Math.ceil(ry); dy++){ const k = 1-(dy*dy)/(ry*ry); if(k<0) continue;
-    const w = Math.round(rx*Math.sqrt(k)); g.fillRect(Math.round(cx-w),Math.round(cy+dy),w*2+1,1); } }
-function line(g,x0,y0,x1,y1,c,th=1){ const n = Math.max(Math.abs(x1-x0),Math.abs(y1-y0))||1;
-  for(let i=0;i<=n;i++) R(g,x0+(x1-x0)*i/n-(th>>1),y0+(y1-y0)*i/n-(th>>1),th,th,c); }
 const hash = n => { const s = Math.sin(n*127.1)*43758.5453; return s-Math.floor(s); };
 const lerp = (a,b,k) => a+(b-a)*k, clamp = (v,a,b) => Math.max(a,Math.min(b,v));
 const ease = k => k<.5 ? 2*k*k : 1-Math.pow(-2*k+2,2)/2;
+const A = (hex,a) => { const n = parseInt(hex.slice(1),16); return `rgba(${n>>16},${n>>8&255},${n&255},${a})`; };
 
-/* where each story's object sits in the room */
-const OBJ = { mirror:[98,33], candle:[48,70], musicbox:[60,75], painting:[131,30], door:[14,68], bear:[91,50] };
+/* tiny painting kit, all in room units (160 x 150) */
+const E = (g,x,y,rx,ry,fill,rot=0) => { g.beginPath(); g.ellipse(x,y,rx,ry===undefined?rx:ry,rot,0,TAU); g.fillStyle = fill; g.fill(); };
+function RR(g,x,y,w,h,r,fill){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); if(fill){ g.fillStyle = fill; g.fill(); } }
+const LG = (g,x0,y0,x1,y1,...st) => { const gr = g.createLinearGradient(x0,y0,x1,y1); st.forEach(([o,c]) => gr.addColorStop(o,c)); return gr; };
+const RG = (g,x,y,r0,r1,...st) => { const gr = g.createRadialGradient(x,y,r0,x,y,r1); st.forEach(([o,c]) => gr.addColorStop(o,c)); return gr; };
+function ST(g,col,w,f){ g.beginPath(); f(g); g.strokeStyle = col; g.lineWidth = w; g.lineCap = 'round'; g.lineJoin = 'round'; g.stroke(); }
+function FP(g,fill,f){ g.beginPath(); f(g); g.closePath(); g.fillStyle = fill; g.fill(); }
+const glow = (g,x,y,r,col,a) => { g.fillStyle = RG(g,x,y,0,r,[0,A(col,a)],[1,A(col,0)]); g.fillRect(x-r,y-r,r*2,r*2); };
+
 const GAP = {x:80,y:84,w:72,h:26};
 const TOY = {x:114,y:100};
 
-/* ───────────── the room (drawn once) ───────────── */
-function drawRoom(g){
-  R(g,0,0,W,H,P.ink2);
-  for(let y=4;y<100;y+=8) for(let x=(y%16?2:6);x<W;x+=8){ px(g,x,y,P.ink3); px(g,x-1,y+1,P.ink3); px(g,x+1,y+1,P.ink3); px(g,x,y+2,P.ink3); }
-  R(g,0,100,W,4,P.ink3); R(g,0,100,W,1,P.ink4);
-  // floor boards
-  R(g,0,104,W,46,'#1d1917');
-  [104,109,116,125,136].forEach((y,i) => { R(g,0,y,W,1,P.ink);
-    for(let x=(i*37)%50+8;x<W;x+=58) R(g,x,y,1,[5,7,9,11,14][i],P.ink); });
-  for(let i=0;i<40;i++) px(g,hash(i)*W,106+hash(i+9)*42,P.ink3);
+/* ───────────── the six hunts: three things to find before each story ───────────── */
+const key = (g,x,y,rot) => { g.save(); g.translate(x,y); g.rotate(rot); ST(g,P.gold,.7,c => { c.arc(-2,0,1.3,0,TAU); c.moveTo(-.7,0); c.lineTo(3.4,0); c.moveTo(2.4,0); c.lineTo(2.4,1.1); c.moveTo(3.4,0); c.lineTo(3.4,1.3); }); g.restore(); };
+const HUNT = {
+ mirror:[ {x:98,y:33,r:11,label:'the mirror'},
+   {x:36,y:133,r:8,label:'a pressed flower',draw(g){ ST(g,P.bone3,.5,c => { c.moveTo(36,137); c.quadraticCurveTo(35,134,36,132); }); for(let i=0;i<5;i++) E(g,36+Math.cos(i*TAU/5)*1.5,131+Math.sin(i*TAU/5)*1.5,1.2,.8,P.blush,i*TAU/5); E(g,36,131,.7,.7,P.red); }},
+   {x:41,y:52,r:8,label:'a smile on the glass',draw(g){ E(g,39.6,50.5,.5,.5,A(P.bone,.8)); E(g,42.4,50.5,.5,.5,A(P.bone,.8)); ST(g,A(P.bone,.8),.5,c => { c.moveTo(38.6,52.6); c.quadraticCurveTo(41,55.2,43.6,52.2); }); }} ],
+ candle:[ {x:48,y:70,r:9,label:'the candle'},
+   {x:27,y:111,r:8,label:'a box of matches',draw(g){ g.save(); g.translate(27,111); g.rotate(-.3); RR(g,-3,-1.7,6,3.4,.4,P.gold3); g.fillStyle = P.red; g.fillRect(-3,-1.7,6,1); ST(g,P.bone2,.4,c => { c.moveTo(1,2.6); c.lineTo(5.5,1.2); }); E(g,5.8,1.1,.6,.5,P.red); g.restore(); }},
+   {x:67,y:109,r:8,label:'a puddle of wax',draw(g){ E(g,67,109,4,1.4,P.bone2); E(g,66.3,108.7,2.4,.8,P.bone); ST(g,P.ink,.4,c => { c.moveTo(67,108.6); c.lineTo(67.3,107.2); }); }} ],
+ musicbox:[ {x:60,y:75,r:9,label:'the music box'},
+   {x:30,y:139,r:8,label:'a tiny key',draw(g){ key(g,30,139,.4); }},
+   {x:71,y:24,r:8,label:'the clock at three'} ],
+ ghosts:[ {x:131,y:30,r:12,label:'the painting'},
+   {x:52,y:117,r:8,label:'a paintbrush',draw(g){ g.save(); g.translate(52,117); g.rotate(.25); ST(g,P.wood3,.9,c => { c.moveTo(-5,0); c.lineTo(2,0); }); ST(g,P.gold,1,c => { c.moveTo(2,0); c.lineTo(3.4,0); }); FP(g,P.red,c => { c.moveTo(3.4,-.8); c.quadraticCurveTo(6.4,0,3.4,.8); }); g.restore(); }},
+   {x:30,y:99,r:8,label:'a warm kettle',draw(g,t){ E(g,30,100.6,3.6,2.8,LG(g,26,98,34,103,[0,P.gold2],[1,P.gold3])); RR(g,28.4,97.2,3.2,1,.4,P.gold3); ST(g,P.gold3,.8,c => { c.moveTo(33.2,100); c.quadraticCurveTo(35.6,99.4,35.8,97.4); }); ST(g,P.gold2,.6,c => { c.arc(30,97.6,2.6,Math.PI*1.1,Math.PI*1.9); });
+     for(let i=0;i<2;i++){ const s = Math.sin(t*1.4+i*2)*1.2; ST(g,A(P.bone,.28),.5,c => { c.moveTo(35.8+i,96.6); c.bezierCurveTo(34.6+s,94.6,37.4-s,92.8,36+s,90.6); }); } }} ],
+ door:[ {x:14,y:68,r:13,label:'the door'},
+   {x:39,y:64,r:8,label:'a key on the sill',draw(g){ key(g,39,64.4,0); }},
+   {x:15,y:104,r:8,label:'a note under the door',draw(g){ FP(g,P.bone,c => { c.moveTo(11,102.6); c.lineTo(18.6,102.4); c.lineTo(19.6,105.6); c.lineTo(10.4,106); }); ST(g,A(P.ink,.5),.3,c => { c.moveTo(12,103.8); c.lineTo(17.6,103.6); c.moveTo(12,104.8); c.lineTo(16,104.7); }); }} ],
+ attic:[ {x:91,y:50,r:10,label:'the bear'},
+   {x:60,y:123,r:8,label:'a lost button eye',draw(g){ E(g,60,123,1.6,1.3,P.wood3); E(g,60,123,1.6,1.3,A(P.ink,.25)); E(g,59.5,123,.3,.3,P.ink); E(g,60.5,123,.3,.3,P.ink); }},
+   {x:22,y:117,r:8,label:'a wooden block',draw(g){ g.save(); g.translate(22,117); g.rotate(-.15); RR(g,-2.6,-2.6,5.2,5.2,.5,P.gold2); RR(g,-1.8,-1.8,3.6,3.6,.3,P.red2); ST(g,P.bone,.5,c => { c.moveTo(-.9,1); c.lineTo(0,-1.1); c.lineTo(.9,1); c.moveTo(-.5,.2); c.lineTo(.5,.2); }); g.restore(); }} ]
+};
+const LIGHT_R = [27,25,23,21,19,17];           // the flashlight shrinks a little every night
+const HINT_AFTER = [9,11,13,15,18,22];          // seconds before the next thing gives itself away
+
+/* ───────────── the room (painted once per size) ───────────── */
+function paintRoom(g){
+  // wall
+  g.fillStyle = LG(g,0,0,0,104,[0,'#121012'],[1,'#201b1c']); g.fillRect(0,0,W,104);
+  for(let y=6;y<80;y+=9) for(let x=(y%18?3:7.5);x<W;x+=9){ ST(g,A(P.bone,.03),.35,c => { c.moveTo(x,y-2); c.quadraticCurveTo(x+2,y,x,y+2); c.quadraticCurveTo(x-2,y,x,y-2); }); E(g,x,y,.3,.3,A(P.bone,.04)); }
+  g.fillStyle = LG(g,0,80,0,104,[0,'#1b1617'],[1,'#110e0f']); g.fillRect(0,80,W,24);
+  for(let x=5;x<W;x+=11) ST(g,A(P.ink,.6),.4,c => { c.moveTo(x,81); c.lineTo(x,100); });
+  ST(g,A(P.bone,.09),.4,c => { c.moveTo(0,80); c.lineTo(W,80); });
+  g.fillStyle = '#231e1d'; g.fillRect(0,100,W,4); ST(g,A(P.bone,.07),.3,c => { c.moveTo(0,100); c.lineTo(W,100); });
+  // floor boards running toward the wall
+  g.fillStyle = LG(g,0,104,0,150,[0,'#15110e'],[1,'#2a2119']); g.fillRect(0,104,W,46);
+  for(let i=-16;i<=16;i++) ST(g,A(P.ink,.65),.45,c => { c.moveTo(80+i*8,104); c.lineTo(80+i*25,150); });
+  for(let i=0;i<22;i++){ const y = 106+hash(i)*42, x = hash(i+40)*W; ST(g,A(P.ink,.5),.35,c => { c.moveTo(x,y); c.lineTo(x+4+hash(i+7)*5,y); }); }
+  FP(g,A(P.bone,.05),c => { c.moveTo(32,106); c.lineTo(62,106); c.lineTo(54,146); c.lineTo(6,146); });      // pale light from the window
   // rug
-  R(g,14,121,112,26,P.red3); R(g,16,123,108,22,P.red2); R(g,18,125,104,18,P.red3);
-  for(let x=20;x<120;x+=6){ px(g,x,127,P.gold3); px(g,x+3,140,P.gold3); px(g,x+1,133,P.red2); px(g,x+2,134,P.red2); }
-  for(let y=122;y<147;y+=2){ px(g,12,y,P.bone3); px(g,13,y,P.bone3); px(g,126,y,P.bone3); px(g,127,y,P.bone3); }
+  FP(g,LG(g,0,120,0,148,[0,P.red3],[1,P.red2]),c => { c.moveTo(20,120); c.lineTo(120,120); c.lineTo(129,147); c.lineTo(11,147); });
+  ST(g,A(P.gold2,.5),.5,c => { c.moveTo(24,123); c.lineTo(116,123); c.lineTo(123,144); c.lineTo(17,144); c.closePath(); });
+  for(let x=30;x<112;x+=10){ FP(g,A(P.gold3,.8),c => { c.moveTo(x,131); c.lineTo(x+2.4,133.5); c.lineTo(x,136); c.lineTo(x-2.4,133.5); }); E(g,x+5,133.5,.6,.6,A(P.red,.8)); }
+  for(let i=0;i<14;i++){ const k = i/13, yl = lerp(120.5,146.5,k); ST(g,A(P.bone3,.7),.4,c => { c.moveTo(lerp(20,11,k),yl); c.lineTo(lerp(20,11,k)-2.2,yl+.6); c.moveTo(lerp(120,129,k),yl); c.lineTo(lerp(120,129,k)+2.2,yl+.6); }); }
   // door
-  R(g,3,35,22,65,P.ink4); R(g,5,37,18,63,P.ink3);
-  R(g,7,40,14,24,P.ink2); R(g,8,41,12,22,P.ink3); R(g,7,68,14,28,P.ink2); R(g,8,69,12,26,P.ink3);
-  R(g,20,66,2,2,P.gold); px(g,20,69,P.gold2);
-  // window
-  R(g,33,18,30,48,P.ink4); R(g,35,20,26,44,P.ink);
-  [[38,24],[57,23],[41,50],[55,45],[37,38]].forEach(([x,y]) => px(g,x,y,P.bone3));
-  ell(g,52,31,5,5,P.bone); px(g,50,29,P.bone2); px(g,54,33,P.bone2); px(g,53,30,P.bone2);
-  line(g,35,48,46,38,P.ink3); line(g,46,38,60,34,P.ink3); line(g,44,40,48,28,P.ink3); line(g,52,36,58,42,P.ink3); line(g,40,43,36,34,P.ink3);
-  R(g,47,20,2,44,P.ink4); R(g,35,41,26,2,P.ink4); R(g,33,65,30,2,P.ink5);
-  R(g,28,16,40,1,P.gold2);
-  for(let i=0;i<7;i++){ R(g,29+i,17,1,54-(i%3),i%2?P.red3:P.red2); R(g,60+i,17,1,54-(i%3),i%2?P.red2:P.red3); }
+  RR(g,2,33,24,69,1.5,'#2b2523'); RR(g,4,35,20,67,1,LG(g,4,0,24,0,[0,'#191515'],[1,'#2a2422']));
+  [[6.5,39,15,25],[6.5,68,15,29]].forEach(([x,y,w,h]) => { RR(g,x,y,w,h,.8,A(P.ink,.55)); RR(g,x+.8,y+.8,w-1.6,h-1.6,.6,'#221d1c'); });
+  E(g,21.6,66.5,1.4,1.4,RG(g,21.2,66,0,1.6,[0,P.goldhi],[1,P.gold2])); E(g,21.6,69.6,.5,.7,P.ink);
+  // gothic window
+  const arch = c => { c.moveTo(34,66); c.lineTo(34,34); c.quadraticCurveTo(35,20,48,14); c.quadraticCurveTo(61,20,62,34); c.lineTo(62,66); };
+  FP(g,LG(g,0,14,0,66,[0,'#0c0b0d'],[1,'#191617']),arch);
+  g.save(); g.beginPath(); arch(g); g.clip();
+  glow(g,52,31,17,P.bone,.22); E(g,52,31,5.2,5.2,RG(g,50.6,29.6,0,5.6,[0,P.white],[1,P.bone2])); E(g,53.6,32.4,1,1,A(P.bone3,.5)); E(g,50.4,29.4,.7,.7,A(P.bone3,.4));
+  [[38,24],[57,23],[41,49],[56,46],[37,38],[44,20]].forEach(([x,y]) => E(g,x,y,.3,.3,A(P.bone,.6)));
+  E(g,44,37,8,1.6,A(P.bone,.05)); E(g,56,41,7,1.3,A(P.bone,.05));
+  ST(g,P.ink,1.2,c => { c.moveTo(33,52); c.bezierCurveTo(40,46,44,40,50,36); c.bezierCurveTo(54,34,58,35,63,31); });
+  ST(g,P.ink,.6,c => { c.moveTo(44,42); c.quadraticCurveTo(45,33,49,27); c.moveTo(52,35); c.quadraticCurveTo(56,38,59,44); c.moveTo(40,46); c.quadraticCurveTo(37,40,36,34); c.moveTo(47,31); c.lineTo(43,27); });
+  g.restore();
+  ST(g,'#3a3330',1.6,arch); ST(g,'#3a3330',1,c => { c.moveTo(48,14); c.lineTo(48,66); c.moveTo(34,42); c.lineTo(62,42); c.moveTo(34,28); c.quadraticCurveTo(48,24,62,28); });
+  RR(g,31,65,34,2.6,.6,'#4a423d');
+  ST(g,P.gold2,.8,c => { c.moveTo(25,13); c.lineTo(71,13); }); E(g,25,13,1,1,P.gold); E(g,71,13,1,1,P.gold);
+  [[27,1],[69,-1]].forEach(([x0,d]) => { for(let i=0;i<5;i++){ const x = x0+d*i*2.1, w = 2.3*d, sw = Math.sin(i*1.7)*.8;
+      FP(g,i%2?P.red2:P.red3,c => { c.moveTo(x,13.4); c.lineTo(x+w,13.4); c.bezierCurveTo(x+w+sw,34,x+w-d*2,44,x+w-d*i*.5,50); c.bezierCurveTo(x+w+d,58,x+w+sw,66,x+w,72-(i%2)); c.lineTo(x,72-(i%3)*.6); c.bezierCurveTo(x+sw,60,x+d,56,x-d*i*.5,50); c.bezierCurveTo(x-d*2,42,x+sw,30,x,13.4); }); }
+    ST(g,P.gold,.9,c => { c.moveTo(x0-d*.6,50); c.quadraticCurveTo(x0+d*4.5,51.6,x0+d*9.6,50); }); });
+  // clock, stopped at three
+  E(g,71,24,5,5,RG(g,70,23,0,5.4,[0,P.gold2],[1,P.gold3])); E(g,71,24,3.9,3.9,RG(g,70.4,23.2,0,4,[0,P.bone2],[1,P.bone3]));
+  for(let i=0;i<12;i++) E(g,71+Math.cos(i*TAU/12)*3.2,24+Math.sin(i*TAU/12)*3.2,.22,.22,P.ink);
+  ST(g,P.ink,.5,c => { c.moveTo(71,24); c.lineTo(71,21.2); c.moveTo(71,24); c.lineTo(73.2,24); }); E(g,71,24,.4,.4,P.red);
   // nightstand
-  R(g,37,80,30,2,P.wood3); R(g,39,82,26,20,P.wood); R(g,41,85,22,7,P.wood2); R(g,51,88,2,1,P.gold2);
-  R(g,40,102,2,2,P.wood2); R(g,62,102,2,2,P.wood2);
-  for(let x=42;x<54;x+=2){ px(g,x,82,P.bone2); px(g,x+1,83,P.bone2); }
-  // candle and holder
-  R(g,45,78,7,2,P.gold2); R(g,46,77,5,1,P.gold); R(g,47,71,3,6,P.bone); px(g,49,72,P.bone2); px(g,49,74,P.bone2); px(g,48,70,P.ink);
+  ST(g,P.wood2,1.6,c => { c.moveTo(41,101); c.quadraticCurveTo(40,103,39.4,104); c.moveTo(63,101); c.quadraticCurveTo(64,103,64.6,104); });
+  RR(g,39,82,26,19.5,.8,LG(g,39,0,65,0,[0,P.wood],[.5,P.wood2],[1,P.wood])); RR(g,37,79.6,30,2.6,.7,LG(g,0,79.6,0,82.2,[0,P.wood3],[1,P.wood2]));
+  RR(g,41.4,85,21.2,7,.6,A(P.ink,.5)); RR(g,42,85.6,20,5.8,.5,P.wood2); E(g,52,88.5,.9,.9,P.gold2);
+  for(let x=41.5;x<57;x+=2.4) E(g,x,82.4,1.2,1.5,A(P.bone,.8)); for(let x=41.5;x<57;x+=2.4) E(g,x,82.9,.35,.35,P.wood);
+  // candle
+  E(g,48,79.4,4.2,1.2,P.gold2); RR(g,46.2,77.4,3.6,2,.6,LG(g,46,0,50,0,[0,P.gold],[1,P.gold3]));
+  RR(g,46.6,70.4,2.8,7.4,.5,LG(g,46.6,0,49.4,0,[0,P.white],[1,P.bone2])); E(g,49.2,73,.5,1.3,P.bone); E(g,46.9,75,.4,1,P.bone);
+  ST(g,P.ink,.35,c => { c.moveTo(48,70.4); c.lineTo(48.1,69.2); });
   // music box
-  R(g,56,75,9,5,P.red2); R(g,56,75,9,1,P.gold2); R(g,56,79,9,1,P.gold3); px(g,60,77,P.gold);
-  R(g,56,71,9,1,P.gold2); R(g,64,71,1,4,P.gold3);
-  px(g,60,72,P.bone); R(g,59,73,3,1,P.bone); px(g,60,74,P.bone2);
+  RR(g,55.4,74.4,9.6,5.4,.6,LG(g,0,74.4,0,79.8,[0,P.red],[1,P.red3])); ST(g,P.gold2,.4,c => { c.moveTo(55.6,75.6); c.lineTo(64.8,75.6); c.moveTo(55.6,78.8); c.lineTo(64.8,78.8); }); E(g,60.2,77.2,.6,.6,P.gold);
+  FP(g,P.red2,c => { c.moveTo(55.6,74.4); c.lineTo(64.6,74.4); c.lineTo(65.6,70.2); c.lineTo(63.6,70.4); }); ST(g,P.gold2,.35,c => { c.moveTo(64.6,74.4); c.lineTo(65.6,70.2); });
   // mirror
-  ell(g,98,33,8,11,P.gold2); ell(g,98,33,6,9,P.ink3); line(g,95,29,99,25,P.ink4); line(g,97,34,101,30,P.ink4);
-  px(g,98,21,P.gold); px(g,98,45,P.gold);
+  E(g,98,33,8.8,11.8,RG(g,95,28,1,13,[0,P.gold],[.7,P.gold2],[1,P.gold3]));
+  [[98,20.6],[98,45.4],[89,33],[107,33]].forEach(([x,y]) => E(g,x,y,1.3,1.3,RG(g,x-.3,y-.3,0,1.4,[0,P.goldhi],[1,P.gold2])));
+  E(g,98,33,6.6,9.6,LG(g,92,24,104,42,[0,'#332e2d'],[.5,'#171415'],[1,'#252020']));
+  ST(g,A(P.bone,.2),.6,c => { c.moveTo(94.4,30); c.lineTo(98.6,25); c.moveTo(96.4,35.4); c.lineTo(101.4,29.4); });
   // painting
-  R(g,120,20,22,20,P.gold2); R(g,122,22,18,16,P.ink3);
-  ell(g,131,29,3,4,P.bone3); R(g,128,31,7,5,P.bone3); px(g,130,28,P.ink); px(g,132,28,P.ink); px(g,128,36,P.ink3); px(g,131,36,P.ink3); px(g,134,36,P.ink3);
-  // bed: pillow, blanket, lace hem, posts, the dark underneath
-  R(g,80,58,72,26,P.red3);
-  ell(g,141,56,10,4,P.bone2); R(g,132,57,19,3,P.bone3);
-  for(let x=80;x<152;x++){ const top = 58+Math.round(Math.sin(x*.35)*.8); R(g,x,top,1,80-top,(x>>2)%2?P.red2:P.red3); }
-  for(let x=83;x<150;x+=7){ px(g,x,64,P.gold3); px(g,x+3,71,P.gold3); px(g,x+1,76,P.red); }
-  R(g,80,80,72,2,P.bone2);
-  for(let x=80;x<152;x++){ const s = x%4; R(g,x,82,1,s===1||s===2?2:1,P.bone); if(s===0) px(g,x,81,P.bone3); }
-  R(g,GAP.x,GAP.y,GAP.w,GAP.h,P.ink);
-  R(g,74,42,6,68,P.wood2); R(g,74,42,2,68,P.wood3); R(g,73,48,8,3,P.wood3); R(g,73,76,8,3,P.wood3); ell(g,77,39,3,3,P.wood3);
-  R(g,152,36,8,74,P.wood2); R(g,152,36,2,74,P.wood3); R(g,151,44,9,3,P.wood3); R(g,151,78,9,3,P.wood3); ell(g,156,33,3,3,P.wood3);
-  // the bear on the bed, one eye
-  ell(g,91,53,5,5,P.gold2); ell(g,91,45,4,4,P.gold2); px(g,87,42,P.gold2); px(g,88,41,P.gold2); px(g,94,41,P.gold2); px(g,95,42,P.gold2);
-  ell(g,91,47,2,1,P.wood3); px(g,91,46,P.ink); px(g,89,44,P.ink); px(g,93,44,P.gold3); px(g,92,45,P.gold3);
-  R(g,90,52,3,3,P.wood3); R(g,86,57,3,2,P.gold3); R(g,94,57,3,2,P.gold3);
+  RR(g,119.5,19.5,23,21,.8,LG(g,119,19,143,41,[0,P.gold],[.5,P.gold3],[1,P.gold2])); RR(g,122,22,18,16,.4,'#181415');
+  // bed
+  RR(g,80,56,72,28,1,P.red3);
+  E(g,141,56.6,10.6,4.6,LG(g,0,52,0,61,[0,P.bone],[1,P.bone3])); ST(g,A(P.ink,.25),.4,c => { c.moveTo(133,57.4); c.quadraticCurveTo(141,59.4,149,57); });
+  FP(g,LG(g,0,58,0,82,[0,'#6d0a16'],[.6,P.red2],[1,P.red3]),c => { c.moveTo(80,60.4); c.bezierCurveTo(98,57,116,61,131,58.4); c.bezierCurveTo(140,57,147,60,152,59); c.lineTo(152,81); c.lineTo(80,81); });
+  for(let i=0;i<9;i++){ const x = 84+i*8; ST(g,A(P.ink,.28),.9,c => { c.moveTo(x,61); c.bezierCurveTo(x+2,68,x-2,74,x+1,81); }); ST(g,A(P.red,.35),.5,c => { c.moveTo(x+2.6,62); c.bezierCurveTo(x+4.6,68,x+1,74,x+3.6,80); }); }
+  for(let x=86;x<150;x+=8){ FP(g,A(P.gold2,.5),c => { c.moveTo(x,66); c.lineTo(x+1.2,67.4); c.lineTo(x,68.8); c.lineTo(x-1.2,67.4); }); E(g,x+4,74,.5,.5,A(P.gold2,.5)); }
+  g.fillStyle = P.bone2; g.fillRect(80,79.6,72,1.8);
+  for(let x=81.2;x<152;x+=2.6){ E(g,x,81.6,1.35,1.9,LG(g,0,80,0,84,[0,P.bone],[1,P.bone2])); E(g,x,82.2,.4,.4,A(P.ink,.7)); }
+  g.fillStyle = P.ink; g.fillRect(GAP.x,GAP.y,GAP.w,GAP.h); g.fillStyle = LG(g,0,104,0,114,[0,P.ink],[1,A(P.ink,0)]); g.fillRect(78,104,78,10);
+  const post = (x,w,top,bot) => { RR(g,x,top,w,bot-top,w*.3,LG(g,x,0,x+w,0,[0,P.wood3],[.45,P.wood2],[1,P.wood])); const cx = x+w/2;
+    [top+7,top+w*5.4,bot-8].forEach(y => E(g,cx,y,w*.74,w*.36,LG(g,x-1,0,x+w+1,0,[0,P.wood3],[1,P.wood])));
+    E(g,cx,top-2.4,w*.56,w*.66,RG(g,cx-1,top-3.4,0,w*.7,[0,P.wood3],[1,P.wood])); };
+  post(74.4,5.2,42,110); post(152.4,7,37,112);
+  // the bear, one eye
+  E(g,87.4,58,2.2,1.6,P.gold3); E(g,94.6,58,2.2,1.6,P.gold3);
+  E(g,91,53.4,5.3,5.6,RG(g,89.6,51.6,.5,6.2,[0,P.gold2],[1,P.gold3])); E(g,91,54.4,2.6,3,A(P.wood3,.9));
+  E(g,87.2,42.4,1.7,1.7,P.gold3); E(g,94.8,42.4,1.7,1.7,P.gold3);
+  E(g,91,45.6,4.5,4.1,RG(g,89.6,44,.4,5,[0,P.gold2],[1,P.gold3])); E(g,91,47.2,2.1,1.5,P.wood3); E(g,91,46.6,.6,.45,P.ink);
+  ST(g,P.ink,.3,c => { c.moveTo(91,47); c.lineTo(91,47.9); c.moveTo(90.2,48.2); c.quadraticCurveTo(91,48.7,91.8,48.2); });
+  E(g,89.3,44.7,.8,.8,P.ink); E(g,89.1,44.5,.25,.25,P.bone);
+  ST(g,P.ink,.3,c => { c.moveTo(92.2,44.2); c.lineTo(93.4,45.3); c.moveTo(93.4,44.2); c.lineTo(92.2,45.3); });
+  ST(g,A(P.ink,.5),.3,c => { c.moveTo(91,50); c.lineTo(91,58.4); });
 }
-drawRoom(rg);
 
 /* ───────────── toyhead ───────────── */
-const STRANDS = [[-18,-10,-1,-.3,6],[-17,-4,-1,.5,6],[-19,2,-.6,1,6],[-14,-18,-.8,-1,6],[-8,-21,-.4,-1,6],[-2,-22,.1,-1,5],[5,-22,.5,-1,6],
- [11,-20,.9,-.9,6],[16,-15,1,-.5,7],[19,-8,1,.1,6],[18,-1,1,.6,6],[20,4,.5,1,5],[-21,-14,-1,-.6,5],[14,-21,.3,-1,4],[-11,-22,-.2,-1,4]];
-function eye(g,ex,ey,lidRow,look,closed){
-  ell(g,ex,ey+1,6,5,P.ring);
-  for(let dy=-4;dy<=4;dy++){ const w = Math.round(5*Math.sqrt(1-(dy*dy)/16));
-    R(g,ex-w,ey+dy,w*2+1,1,(closed||dy<lidRow)?P.lid:P.white); }
-  if(closed){ R(g,ex-4,ey+2,9,1,P.ink4); return; }
-  R(g,ex-1+look,ey-1,3,3,P.gold); px(g,ex+look,ey,P.ink); px(g,ex-1+look,ey-1,P.goldhi);
-  for(let dy=-1;dy<lidRow;dy++) R(g,ex-1+look,ey+dy,3,1,P.lid);
-  const w = Math.round(5*Math.sqrt(1-(lidRow*lidRow)/16)); R(g,ex-w,ey+lidRow,w*2+1,1,P.ink4);
-}
-function drawToy(g,t,s){
-  g.clearRect(0,0,64,76);
-  const cx = 32, cy = 28;
-  ell(g,cx,cy-9,20,13,P.hair); ell(g,cx-13,cy-2,7,9,P.hair); ell(g,cx+13,cy-2,7,9,P.hair);
-  STRANDS.forEach(([x,y,dx,dy,n],k) => { for(let i=0;i<n;i++) R(g,cx+x+dx*i,cy+y+dy*i,2,2,(i+k)%3===0?P.hair2:P.hair); });
-  // body: striped pyjama shirt, blood-red waistcoat, gold buttons
-  for(let x=-9;x<9;x++) R(g,cx+x,cy+19,1,17,(x&2)?P.shirt:P.shirt2);
-  R(g,cx-11,cy+20,6,16,P.red2); R(g,cx+5,cy+20,6,16,P.red2); R(g,cx-6,cy+21,1,15,P.red); R(g,cx+5,cy+21,1,15,P.red);
-  [23,27,31].forEach(y => px(g,cx,cy+y,P.gold));
-  // planted arm, waving arm
-  line(g,cx-11,cy+22,cx-16,cy+30,P.shirt,4); line(g,cx-16,cy+30,cx-18,cy+37,P.shirt2,4); R(g,cx-20,cy+35,5,1,P.shirt);
-  ell(g,cx-19,cy+40,4,2,P.skin); px(g,cx-23,cy+41,P.skin2); px(g,cx-20,cy+42,P.skin2); px(g,cx-17,cy+42,P.skin2);
-  const wv = s.wave ? Math.round(Math.sin(t*6)*2) : 0;
-  line(g,cx+11,cy+22,cx+18,cy+26,P.shirt,4); line(g,cx+18,cy+26,cx+22+wv,cy+17,P.shirt2,4); R(g,cx+20+wv,cy+16,5,1,P.shirt);
-  R(g,cx+20+wv,cy+10,5,6,P.skin); [0,2,4].forEach(i => R(g,cx+20+wv+i,cy+7,1,3,P.skin)); px(g,cx+19+wv,cy+12,P.skin); px(g,cx+25+wv,cy+12,P.skin2);
-  R(g,cx-2,cy+14,5,6,P.skin2); R(g,cx-5,cy+18,4,2,P.bone3); R(g,cx+2,cy+18,4,2,P.bone3);
+const STRANDS = Array.from({length:74},(_,i) => { const ang = Math.PI + (i/73)*Math.PI + (hash(i+9)-.5)*.3;                     // around the top half of the head
+  return { ang, len:5+hash(i+2)*6.5, curl:(hash(i+5)-.5)*9, w:1.2+hash(i+7)*.7, c:[P.hair,P.hair2,P.hair3,'#4b443e'][i%4], r0:11+hash(i+11)*5 }; });
+const FRINGE = Array.from({length:13},(_,i) => ({ x:-13.5+i*2.25+(hash(i+30)-.5)*1.4, len:2+hash(i+33)*4.6, curl:(hash(i+36)-.5)*6+(i-6)*.35, c:[P.hair,P.hair2,P.hair3][i%3] }));
+function paintToy(g,t,s){
+  const cx = 35, cy = 30;
+  // hair behind
+  E(g,cx,cy-7,19.5,14,RG(g,cx,cy-8,4,20,[0,P.hair],[1,P.hair3])); E(g,cx-14,cy-1,6.5,9,P.hair3); E(g,cx+14,cy-1,6.5,9,P.hair3);
+  STRANDS.forEach((h,i) => { const sx = cx+Math.cos(h.ang)*h.r0*1.15, sy = cy-4+Math.sin(h.ang)*h.r0*.9, wob = Math.sin(t*1.1+i)*.5;
+    const ex = sx+Math.cos(h.ang)*h.len*.8+h.curl*.5+wob, ey = sy+Math.sin(h.ang)*h.len*.55+h.len*.42+Math.abs(h.curl)*.25;
+    const mx = (sx+ex)/2, my = (sy+ey)/2, nx = -Math.sin(h.ang)*h.curl*.55, ny = Math.cos(h.ang)*h.curl*.55;
+    ST(g,h.c,h.w,c => { c.moveTo(sx,sy); c.bezierCurveTo(mx+nx,my+ny-1.5,mx-nx,my-ny,ex,ey); }); });
+  // body
+  g.save(); RR(g,cx-9.5,cy+18,19,19,3); g.clip(); g.fillStyle = P.shirt2; g.fillRect(cx-10,cy+18,20,20);
+  for(let x=-9;x<10;x+=2.3) ST(g,P.shirt,1,c => { c.moveTo(cx+x,cy+18); c.lineTo(cx+x+.4,cy+38); }); g.restore();
+  FP(g,LG(g,cx-11,0,cx-4,0,[0,P.red3],[1,P.red]),c => { c.moveTo(cx-4.6,cy+19.6); c.lineTo(cx-10.6,cy+21); c.lineTo(cx-10.6,cy+37); c.lineTo(cx-4.2,cy+37); c.lineTo(cx-2.6,cy+26); });
+  FP(g,LG(g,cx+4,0,cx+11,0,[0,P.red],[1,P.red3]),c => { c.moveTo(cx+4.6,cy+19.6); c.lineTo(cx+10.6,cy+21); c.lineTo(cx+10.6,cy+37); c.lineTo(cx+4.2,cy+37); c.lineTo(cx+2.6,cy+26); });
+  [23.4,27.6,31.8].forEach(y => E(g,cx,cy+y,.75,.75,RG(g,cx-.2,cy+y-.2,0,.8,[0,P.goldhi],[1,P.gold2])));
+  // planted arm
+  ST(g,P.shirt2,4.6,c => { c.moveTo(cx-9.6,cy+22.5); c.quadraticCurveTo(cx-16.5,cy+27,cx-18.2,cy+37); });
+  for(let i=0;i<4;i++) ST(g,P.shirt,.8,c => { const k = .2+i*.22; c.moveTo(cx-11.8-k*7.4,cy+22.4+k*14); c.lineTo(cx-7.6-k*8.6,cy+24+k*14); });
+  E(g,cx-18.6,cy+38,3,1.3,P.shirt); E(g,cx-19.6,cy+41,4.2,2.3,LG(g,0,cy+39,0,cy+43.5,[0,P.skin],[1,P.skin3]));
+  ST(g,A(P.ring,.7),.3,c => { for(let i=0;i<3;i++){ c.moveTo(cx-21.6+i*1.8,cy+41.2); c.lineTo(cx-22+i*1.8,cy+43); } });
+  // waving arm
+  g.save(); g.translate(cx+9.6,cy+22.5); g.rotate(s.wave ? Math.sin(t*5.2)*.13 : s.rest||0);
+  ST(g,P.shirt2,4.6,c => { c.moveTo(0,0); c.quadraticCurveTo(8.4,5.4,12,-6.5); });
+  for(let i=0;i<3;i++) ST(g,P.shirt,.8,c => { const k = .3+i*.24; c.moveTo(k*9.4-1.6,k*1.2-1.2+(i-1)*-1.6); c.lineTo(k*9.4+1.8,k*1.2+2.6+(i-1)*-2.4); });
+  E(g,12,-7.4,2.6,1.2,P.shirt,-.3);
+  ST(g,P.skin,1.25,c => { [-1,-.35,.3,.95].forEach((a,i) => { c.moveTo(12.6,-10.4); c.lineTo(12.6+Math.sin(a*.62)*5,-10.4-Math.cos(a*.62)*(4.4+(i===1||i===2?.8:0))); }); c.moveTo(11,-9.6); c.lineTo(8.4,-11.2); });
+  E(g,12.6,-10,2.7,2.9,RG(g,12,-10.6,0,3.2,[0,P.skin],[1,P.skin2])); g.restore();
+  // neck and collar
+  RR(g,cx-2.3,cy+13,4.6,7.4,1.4,LG(g,0,cy+13,0,cy+20,[0,P.skin3],[1,P.skin2]));
+  FP(g,P.bone3,c => { c.moveTo(cx-6,cy+18.6); c.lineTo(cx-.6,cy+19.6); c.lineTo(cx-3.2,cy+22.6); }); FP(g,P.bone3,c => { c.moveTo(cx+6,cy+18.6); c.lineTo(cx+.6,cy+19.6); c.lineTo(cx+3.2,cy+22.6); });
   // head
-  ell(g,cx-17,cy+4,3,4,P.skin2); ell(g,cx+17,cy+4,3,4,P.skin2); px(g,cx-18,cy+4,P.ring); px(g,cx+18,cy+4,P.ring);
-  ell(g,cx,cy+2,16,14,P.skin2); ell(g,cx,cy+1,16,13,P.skin);
-  ell(g,cx-11,cy+9,2,1,P.blush); ell(g,cx+11,cy+9,2,1,P.blush);
-  [[-12,6],[-9,11],[-13,10],[10,6],[13,9],[8,11],[-3,5],[3,6],[-6,12],[6,13],[-1,-4],[4,-6]].forEach(([x,y]) => px(g,cx+x,cy+y,P.freck));
-  // brows: thin, high, a little sorry
-  line(g,cx-13,cy-6,cx-10,cy-8,P.ink3); R(g,cx-10,cy-8,6,1,P.ink3); px(g,cx-4,cy-7,P.ink3);
-  line(g,cx+13,cy-6,cx+10,cy-8,P.ink3); R(g,cx+5,cy-8,6,1,P.ink3); px(g,cx+4,cy-7,P.ink3);
-  const look = s.look|0;
-  eye(g,cx-7,cy+2,s.blink?9:0,look,s.blink); eye(g,cx+7,cy+2,s.blink?9:-1,look,s.blink);
-  R(g,cx-1,cy+7,2,2,P.nose);
-  // the small crooked smile
-  R(g,cx-4,cy+11,8,1,P.ink4); px(g,cx-5,cy+10,P.ink4); px(g,cx+4,cy+10,P.ink4); px(g,cx+5,cy+9,P.ink4);
-  if(s.talk) R(g,cx-2,cy+11,4,2,P.red3);
-  // the stitched seam on his forehead
-  R(g,cx+10,cy-11,1,6,P.ink4); [-10,-8,-6].forEach(y => { px(g,cx+9,cy+y,P.ink4); px(g,cx+11,cy+y,P.ink4); });
-  // fringe of yarn
-  [[-13,3],[-10,5],[-7,3],[-3,6],[1,3],[4,5],[7,2],[13,4],[-15,6]].forEach(([x,n],k) => { for(let i=0;i<n;i++) R(g,cx+x+(i>3?1:0),cy-14+i,2,1,(i+k)%3===0?P.hair2:P.hair); });
+  [-1,1].forEach(d => { E(g,cx+d*16.9,cy+4.4,3.1,4.2,RG(g,cx+d*16.4,cy+4,0,4.2,[0,P.skin2],[1,P.skin3])); E(g,cx+d*17.1,cy+4.6,1.4,2.3,A(P.ring,.55)); });
+  E(g,cx,cy+1.6,16.6,14.6,RG(g,cx-3,cy-3,2,19,[0,P.white],[.55,P.skin],[.85,P.skin2],[1,P.skin3]));
+  glow(g,cx-10.5,cy+8.6,4.4,P.blush,.5); glow(g,cx+10.5,cy+8.6,4.4,P.blush,.5);
+  [[-12,6],[-9.4,10.6],[-13,10],[10.4,6.2],[13,9],[8.4,11],[-3,4.6],[3.2,5.6],[-6,12.2],[6.4,12.8],[-1,-4.6],[4,-6.2],[-7.4,-5],[12,3]].forEach(([x,y]) => E(g,cx+x,cy+y,.34,.34,A(P.freck,.75)));
+  // eyes: big, tired, amber
+  [-1,1].forEach(d => { const ex = cx+d*7.2, ey = cy+2.2, lid = s.blink ? 1 : d<0 ? .56 : .46;
+    glow(g,ex,ey+1.4,8.6,P.ring,.55);
+    g.save(); g.beginPath(); g.ellipse(ex,ey,5.4,4.5,0,0,TAU); g.clip();
+    g.fillStyle = RG(g,ex-1,ey-1,.5,6,[0,P.white],[1,'#cfc8bb']); g.fillRect(ex-6,ey-5,12,10);
+    if(!s.blink){ const ix = ex+(s.look||0)*1.3, iy = ey+.9;
+      E(g,ix,iy,2.5,2.5,RG(g,ix-.5,iy-.5,.2,2.6,[0,P.goldhi],[.6,P.gold],[1,P.gold2])); E(g,ix,iy,1.05,1.05,P.ink); E(g,ix-.8,iy-.8,.5,.5,P.white); }
+    const ly = ey-4.5+9*lid; g.fillStyle = LG(g,0,ey-4.5,0,ly,[0,P.skin2],[1,P.lid]); g.fillRect(ex-6,ey-5,12,ly-ey+5);
+    ST(g,P.ink4,.55,c => { c.moveTo(ex-5.6,ly-.4); c.quadraticCurveTo(ex,ly+.9,ex+5.6,ly-.4); });
+    g.restore();
+    ST(g,A(P.ring,.8),.4,c => { c.ellipse(ex,ey,5.4,4.5,0,.15,Math.PI-.15); });
+    ST(g,P.ink3,.5,c => { c.moveTo(ex-d*4.4,ey-9.4); c.quadraticCurveTo(ex+d*1.4,ey-11,ex+d*6.2,ey-7.2); }); });
+  E(g,cx,cy+7.8,1.2,.95,A(P.blush,.9)); E(g,cx-.3,cy+7.5,.4,.3,A(P.white,.5));
+  ST(g,P.ink4,.55,c => { c.moveTo(cx-5,cy+10.4); c.quadraticCurveTo(cx-.6,cy+12.6,cx+4.6,cy+9.8); c.moveTo(cx+4.2,cy+9.2); c.lineTo(cx+5.4,cy+9.6); });
+  if(s.talk) E(g,cx-.4,cy+11.4,2.1,1.5,P.red3);
+  // the stitched seam
+  ST(g,P.ink4,.4,c => { c.moveTo(cx+10.2,cy-11.4); c.quadraticCurveTo(cx+11.4,cy-8.4,cx+11,cy-5.2); [-10.4,-8.4,-6.4].forEach(y => { c.moveTo(cx+9.6,cy+y-.3); c.lineTo(cx+12,cy+y+.3); }); });
+  // fringe
+  FRINGE.forEach((h,i) => ST(g,h.c,1.3,c => { const x = cx+h.x, y = cy-13.6+Math.abs(h.x)*.16; c.moveTo(x-h.curl*.3,y-2.4); c.bezierCurveTo(x+h.curl*.6,y,x-h.curl*.5,y+h.len*.6,x+h.curl*.5,y+h.len); }));
 }
 
 /* ───────────── sound: BEEPS (oscillators) / ELEVENLABS (generated audio) ───────────── */
@@ -272,7 +345,8 @@ const Snd = (() => {
     slideBack(){ tone(180,1.2,{type:'triangle',f2:85,g:.3,a:.2}); },
     blip(i){ tone(190+hash(i)*70,.08,{type:'triangle',g:.22}); },
     deal(){ [0,.12,.24].forEach((t,i) => tone(520+i*90,.05,{type:'square',g:.04,t})); },
-    knock(){ [0,.22,.44].forEach(t => tone(120,.08,{type:'square',g:.08,t})); }
+    knock(){ [0,.22,.44].forEach(t => tone(120,.08,{type:'square',g:.08,t})); },
+    found(){ tone(880,.3,{g:.12}); tone(1318.5,.5,{g:.1,t:.13}); }
   };
   const LULL = ['A4',0,'C5','E5',0,'D5','C5',0,'B4','A4',0,0,'F4',0,'A4','C5',0,'B4','A4',0,'Gs4','A4',0,0];
   const BASS = ['A3','A3','E3','A3','F3','F3','E3','A3'];
@@ -292,7 +366,10 @@ const Snd = (() => {
   const decode = name => bufs[name] || (bufs[name] = new Promise((res,rej) => ac.decodeAudioData(b64(ASSETS[name]),res,rej)));
   const ELSFX = { click:['flashlight-click',.9], creak:['bed-creak',.8], slideOut:['slide-out',1], slideBack:['slide-back',1] };
   const ELLOOP = { lullaby:['dark-lullaby',.2,1.5], wind:['window-wind',.3,.6], heartbeat:['heartbeat',.45,.06], musicbox:['music-box',.28,1], candle:['candle-flicker',.6,.3] };
-  function elShot(key){ const m = ELSFX[key]; if(!m) return; decode(m[0]).then(buf => { const s = ac.createBufferSource(), g = ac.createGain(); s.buffer = buf; g.gain.value = m[1]; s.connect(g); g.connect(out); s.start(); }).catch(()=>{}); }
+  function elShot(key){
+    if(key==='found'){ decode('music-box').then(buf => { const s = ac.createBufferSource(), g = ac.createGain(), t = ac.currentTime; s.buffer = buf;
+      g.gain.setValueAtTime(.5,t); g.gain.setValueAtTime(.5,t+1.1); g.gain.linearRampToValueAtTime(0,t+1.7); s.connect(g); g.connect(out); s.start(t,0,1.8); }).catch(()=>{}); return; }
+    const m = ELSFX[key]; if(!m) return; decode(m[0]).then(buf => { const s = ac.createBufferSource(), g = ac.createGain(); s.buffer = buf; g.gain.value = m[1]; s.connect(g); g.connect(out); s.start(); }).catch(()=>{}); }
   function elLoop(key){ const [name,g,xf] = ELLOOP[key], st = { stop:false, timer:0, bus:ac.createGain() }; st.bus.connect(out); elStop(key); playing[key] = st;
     if(key==='lullaby') st.bus.gain.value = story ? .6 : 1;
     decode(name).then(buf => { (function go(){ if(st.stop) return; const s = ac.createBufferSource(), gn = ac.createGain(), t = ac.currentTime+.02, D = buf.duration;
@@ -320,11 +397,14 @@ const Snd = (() => {
 })();
 
 /* ───────────── state ───────────── */
-const S = { phase:'title', lx:40, ly:60, slide:0, eyes:0, eyesSince:0, talk:false, wave:false, story:null, storyT:0, seen:[], run:0, lastCreak:0 };
-const cap = $('caption'), cards = $('cards'), note = $('note');
+const S = { phase:'title', lx:40, ly:60, slide:0, eyes:0, talk:false, wave:false, story:null, storyT:0, told:[], run:0, lastCreak:0, hunt:null };
+const cap = $('caption'), cards = $('cards');
 const wait = ms => new Promise(r => setTimeout(r,ms));
-const pick = a => a[Math.random()*a.length|0];
+const night = () => Math.min(S.told.length+1,6);
 function hint(t){ cap.className = 'hint'; cap.textContent = t; }
+function status(){ const n = $('nights'); n.textContent = '';
+  for(let i=0;i<6;i++){ const b = document.createElement('b'); if(i<S.told.length) b.className = 'told'; else if(i===S.told.length && S.phase!=='title') b.className = 'now'; n.appendChild(b); }
+  $('status').textContent = S.phase==='title' ? '' : S.told.length>=6 ? 'all six told' : 'night '+night()+' of 6'; }
 
 /* captions: one sentence-sized chunk at a time, words lit as he says them */
 function chunks(text){ const parts = text.match(/[^.?!:]+[.?!:]+/g) || [text], out = [];
@@ -334,11 +414,10 @@ function showChunk(c){ cap.className = ''; cap.textContent = ''; const line = do
   const spans = c.split(' ').map(w => { const sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w+' '; line.appendChild(sp); return sp; });
   cap.appendChild(line); return spans; }
 /* ELEVENLABS: captions follow the real word timings of the recorded line */
-async function speakEL(text,id){
+function speakEL(text,id){
   const tm = TIMINGS[id], run = S.run, groups = []; let k = 0;
   for(const c of chunks(text)){ const n = c.split(' ').length; groups.push({ c, from:k, to:k+n }); k += n; }
-  const { t0, dur } = await Snd.voice(id); let cur = -1, spans = [];
-  return new Promise(res => { (function tick(){
+  return Snd.voice(id).then(({ t0, dur }) => new Promise(res => { let cur = -1, spans = []; (function tick(){
     if(run!==S.run || !Snd.el()){ Snd.stopVoice(); S.talk = false; return res(run===S.run ? Math.max(cur,0) : -1); }
     const t = Snd.ac.currentTime-t0; let g = 0;
     for(let i=0;i<groups.length;i++) if(tm[groups[i].from][1]-.12<=t) g = i;
@@ -347,7 +426,7 @@ async function speakEL(text,id){
     for(let i=groups[g].from;i<groups[g].to;i++){ const w = tm[i]; if(w[1]<=t) spans[i-groups[g].from].classList.add('on'); if(w[1]<=t && t<w[2]) talking = true; }
     S.talk = talking;
     if(t>=dur+.35){ S.talk = false; return res(-1); }
-    requestAnimationFrame(tick); })(); });
+    requestAnimationFrame(tick); })(); }));
 }
 async function speak(text,id){
   let from = 0;
@@ -362,35 +441,48 @@ async function speak(text,id){
     await wait(380);
   }
 }
-async function tween(to,ms){ const from = S.slide, t0 = performance.now();
+function tween(to,ms){ const from = S.slide, t0 = performance.now();
   return new Promise(r => { (function step(){ const k = clamp((performance.now()-t0)/ms,0,1); S.slide = lerp(from,to,ease(k)); k<1 ? requestAnimationFrame(step) : r(); })(); }); }
 
+/* ───────────── a night: find him, pick a story, find three things, listen ───────────── */
 async function call(){
   if(S.phase!=='dark') return; S.phase = 'coming'; const run = ++S.run;
   hint(''); Snd.sfx('creak'); await wait(350); Snd.sfx('slideOut'); S.wave = true;
   await tween(1,1500); await wait(250);
-  const ii = Math.random()*INTROS.length|0; await speak(INTROS[ii],'intro'+(ii+1)); if(run!==S.run) return;
-  S.wave = false; deal();
+  const left = STORIES.filter(s => !S.told.includes(s.id)).sort(() => Math.random()-.5).slice(0,3);
+  const ii = Math.random()*(left.length===3 ? 3 : 2)|0;                      // "three stories" is only said when three are offered
+  await speak(INTROS[ii],'intro'+(ii+1)); if(run!==S.run) return;
+  S.wave = false; deal(left);
 }
-function deal(){
-  const fresh = STORIES.filter(s => !S.seen.includes(s.id)); if(fresh.length<3) S.seen = [];
-  const pool = (fresh.length>=3 ? fresh : STORIES).slice().sort(() => Math.random()-.5).slice(0,3);
+function deal(pool){
   cards.textContent = '';
   pool.forEach(s => { const b = document.createElement('button'); b.type = 'button'; b.className = 'card';
     b.appendChild(document.createElement('i')); b.appendChild(document.createTextNode(s.title));
     b.addEventListener('click',() => tell(s)); cards.appendChild(b); });
-  cards.hidden = false; S.phase = 'cards'; Snd.sfx('deal'); hint('pick a story from the floor.');
+  cards.hidden = false; S.phase = 'cards'; Snd.sfx('deal'); hint(pool.length>1 ? 'pick a story from the floor.' : 'one story left. take it.');
 }
+function checklist(){ const h = S.hunt; cap.className = 'hint'; cap.textContent = '';
+  const box = document.createElement('span'), lead = document.createElement('span'); lead.className = 'lead'; lead.textContent = 'first, find three things with your light: '; box.appendChild(lead);
+  h.items.forEach((it,i) => { const sp = document.createElement('span'); sp.className = 'it'+(h.found.has(i) ? ' done' : ''); sp.textContent = it.label; box.appendChild(sp); if(i<2) box.appendChild(document.createTextNode(' · ')); });
+  cap.appendChild(box); }
+function find(i){ const h = S.hunt; if(!h || h.found.has(i)) return; h.found.add(i); h.last = performance.now(); h.at[i] = h.last; Snd.sfx('found'); checklist();
+  if(h.found.size===3) h.done(); }
 async function tell(s){
-  if(S.phase!=='cards') return; S.phase = 'story'; const run = ++S.run;
-  cards.hidden = true; S.seen.push(s.id); S.story = s; S.storyT = performance.now();
+  if(S.phase!=='cards') return; const run = ++S.run;
+  cards.hidden = true; S.story = s; S.phase = 'hunt';
+  await new Promise(done => { S.hunt = { items:HUNT[s.id], found:new Set(), at:{}, last:performance.now(), done }; checklist(); });
+  if(run!==S.run) return;
+  await wait(900); S.phase = 'story'; S.storyT = performance.now(); hint('');
   Snd.setStory(s); Snd.loop('heartbeat',true); Snd.loop('candle',true); if(s.id==='musicbox') Snd.loop('musicbox',true);
   if(s.id==='door') Snd.sfx('knock');
-  await wait(500); await speak(s.text,'story-'+s.id); if(run!==S.run) return;
-  Snd.loop('heartbeat',false); Snd.loop('candle',false); Snd.loop('musicbox',false); Snd.setStory(null); S.story = null;
+  await wait(600); await speak(s.text,'story-'+s.id); if(run!==S.run) return;
+  Snd.loop('heartbeat',false); Snd.loop('candle',false); Snd.loop('musicbox',false); Snd.setStory(null);
+  S.phase = 'leaving'; S.hunt = null; S.story = null; S.told.push(s.id); status();
   const ni = Math.random()*NIGHTS.length|0; await wait(500); await speak(NIGHTS[ni],'night'+(ni+1)); if(run!==S.run) return;
-  await wait(300); Snd.sfx('slideBack'); await tween(0,1400); Snd.sfx('creak');
-  S.phase = 'dark'; S.eyes = 0; hint('he is back under the bed. shine your light to call him again.');
+  await wait(300); Snd.sfx('slideBack'); await tween(0,1400); Snd.sfx('creak'); S.eyes = 0;
+  if(S.told.length>=6){ S.phase = 'end'; hint('that was the last story. he is asleep now. tap the room to begin the six nights again.'); }
+  else { S.phase = 'dark'; hint('night '+night()+'. your light is a little smaller. shine it under the bed.'); }
+  status();
 }
 
 /* ───────────── input ───────────── */
@@ -401,101 +493,126 @@ let downSaw = false;
 frame.addEventListener('pointermove',e => { if(S.phase==='title') return; [S.lx,S.ly] = toScene(e); });
 frame.addEventListener('pointerdown',e => { if(S.phase==='title' || e.target.closest('#cards')) return;
   downSaw = S.eyes>.6; [S.lx,S.ly] = toScene(e); Snd.resume(); });
-frame.addEventListener('pointerup',e => { if(S.phase!=='dark' || e.target.closest('#cards')) return;
-  const [x,y] = toScene(e); if(downSaw && overEyes(x,y)) call(); else Snd.sfx('click'); });
-frame.addEventListener('keydown',e => { if(e.key!=='Enter' && e.key!==' ') return; if(e.target!==frame || S.phase!=='dark') return; e.preventDefault();
-  if(S.eyes>.6) call(); else { S.lx = TOY.x; S.ly = 96; Snd.sfx('click'); } });
+frame.addEventListener('pointerup',e => { if(e.target.closest('#cards') || e.target.closest('#start')) return; const [x,y] = toScene(e);
+  if(S.phase==='dark'){ if(downSaw && overEyes(x,y)) call(); else Snd.sfx('click'); }
+  else if(S.phase==='hunt'){ const h = S.hunt; let best = -1, bd = 1e9;
+    h.items.forEach((it,i) => { const d = Math.hypot(it.x-x,it.y-y); if(!h.found.has(i) && d<it.r && d<bd){ bd = d; best = i; } });
+    if(best>=0) find(best); else Snd.sfx('click'); }
+  else if(S.phase==='end'){ S.told = []; S.phase = 'dark'; status(); Snd.sfx('click'); hint('night 1 again. shine your light under the bed.'); } });
+frame.addEventListener('keydown',e => { if(e.key!=='Enter' && e.key!==' ') return; if(e.target!==frame) return; e.preventDefault();
+  if(S.phase==='dark'){ if(S.eyes>.6) call(); else { S.lx = TOY.x; S.ly = 96; Snd.sfx('click'); } }
+  else if(S.phase==='hunt'){ const i = S.hunt.items.findIndex((_,k) => !S.hunt.found.has(k)); if(i>=0){ const it = S.hunt.items[i]; if(Math.hypot(S.lx-it.x,S.ly-it.y)<2) find(i); else { S.lx = it.x; S.ly = it.y; Snd.sfx('click'); } } } });
 $('begin').addEventListener('click',async () => {
   Snd.init(); Snd.resume(); $('begin').disabled = true; $('begin').textContent = 'one moment...';
-  await Promise.race([Snd.preload(), wait(6000)]); $('start').hidden = true; S.phase = 'dark'; S.lx = 48; S.ly = 60;
+  await Promise.race([Snd.preload(), wait(6000)]); $('start').hidden = true;
+  S.phase = 'dark'; S.lx = 48; S.ly = 60; status();
   Snd.sfx('click'); Snd.loop('lullaby',true); Snd.loop('wind',true); S.lastCreak = performance.now();
-  hint('it is very quiet. shine your light under the bed.'); frame.focus({preventScroll:true});
+  hint('night 1. it is very quiet. shine your light under the bed.'); frame.focus({preventScroll:true});
 });
 const mB = $('m-beeps'), mE = $('m-el');
-function setMode(m){
-  mB.setAttribute('aria-pressed',m==='beeps'); mE.setAttribute('aria-pressed',m==='el');
-  Snd.setMode(m);
-  note.textContent = (m==='el' && !EL_READY) ? 'elevenlabs audio is not recorded yet. playing beeps for now.' : m==='el' ? 'after: real voice + elevenlabs sound' : 'before: browser beeps, text only';
-}
+function setMode(m){ mB.setAttribute('aria-pressed',m==='beeps'); mE.setAttribute('aria-pressed',m==='el'); Snd.setMode(m); status(); }
 mB.addEventListener('click',() => setMode('beeps')); mE.addEventListener('click',() => setMode('el'));
 
 /* ───────────── render ───────────── */
-function hole(g,x,y,r,a){ g.globalAlpha = a; ell(g,x,y,r,r,'#000'); g.globalAlpha = 1; }
-function halo(x,y,r,c,a){ ctx.globalAlpha = a; ell(ctx,x,y,r,r,c); ctx.globalAlpha = 1; }
+let K = 4, roomLayer = mk(8,8), toyLayer = mk(8,8), grain = null;
+const DS = 2, dark = mk(W*DS,H*DS), dg = dark.getContext('2d');
+function hole(x,y,r,a){ const gr = dg.createRadialGradient(x*DS,y*DS,r*DS*.3,x*DS,y*DS,r*DS); gr.addColorStop(0,`rgba(0,0,0,${a})`); gr.addColorStop(1,'rgba(0,0,0,0)'); dg.fillStyle = gr; dg.fillRect((x-r)*DS,(y-r)*DS,r*2*DS,r*2*DS); }
 const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mainOf = s => HUNT[s.id][0];
 function draw(now){
-  const t = now/1000, st = S.story, inStory = !!st;
-  const fl = calm ? .5 : hash(Math.floor(t*(inStory?11:7)));          // candle flicker, stepped
-  ctx.drawImage(room,0,0);
+  const t = now/1000, st = S.story, inStory = S.phase==='story', h = S.hunt;
+  const fl = calm ? .5 : (Math.sin(t*9.3)*.25+.25)+hash(Math.floor(t*(inStory?12:7)))*.5;      // candle flicker
+  const R = LIGHT_R[night()-1];
+  ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(roomLayer,0,0); ctx.setTransform(K,0,0,K,0,0);
 
-  // shadows that move while he talks
-  if(inStory){ ctx.fillStyle = 'rgba(11,11,13,.5)';
-    for(let i=0;i<3;i++){ const x = ((t*7+i*75)%230)-40; for(let y=0;y<100;y+=4) ctx.fillRect(Math.round(x+y*.35+Math.sin(t+i)*3),y,12+i*3,4); }
-    const sway = Math.round(Math.sin(t*1.3)*2); line(ctx,66,30+sway,84,22-sway,'rgba(11,11,13,.6)',2); line(ctx,72,27+sway,78,36,'rgba(11,11,13,.6)'); }
+  // shadows that cross the wall while he talks
+  if(inStory){ ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,100); ctx.clip(); ctx.transform(1,0,.35,1,0,0);
+    for(let i=0;i<3;i++){ const x = ((t*6+i*80)%250)-60, w = 22+i*5; ctx.fillStyle = LG(ctx,x,0,x+w,0,[0,A(P.ink,0)],[.5,A(P.ink,.6)],[1,A(P.ink,0)]); ctx.fillRect(x,0,w,100); }
+    ctx.restore(); const sw = Math.sin(t*1.3)*2.4;
+    ST(ctx,A(P.ink,.55),1.5,c => { c.moveTo(64,36); c.bezierCurveTo(72,30+sw,80,26-sw,90,21+sw); c.moveTo(74,30+sw*.5); c.quadraticCurveTo(78,35,80,41+sw); }); }
+
+  // the ghost in the painting (it leaves its frame during its own story)
+  { const gone = inStory && st.id==='ghosts' ? clamp(Math.sin(t*.7)*1.6+.5,0,1) : 1;
+    ctx.globalAlpha = gone*.6; FP(ctx,P.bone,c => { c.moveTo(127.6,36.4); c.lineTo(127.6,29.6); c.bezierCurveTo(127.6,24.4,134.4,24.4,134.4,29.6); c.lineTo(134.4,36.4); c.quadraticCurveTo(133.3,34.8,132.2,36.4); c.quadraticCurveTo(131,34.8,129.9,36.4); c.quadraticCurveTo(128.7,34.8,127.6,36.4); });
+    ctx.globalAlpha = gone; E(ctx,129.8,29.4,.55,.75,P.ink); E(ctx,132.2,29.4,.55,.75,P.ink); ctx.globalAlpha = 1; }
+  // the dancer in the music box
+  { const a = inStory && st.id==='musicbox' ? t*2.4 : .4; ST(ctx,P.bone,.5,c => { c.moveTo(60.2,74.4); c.lineTo(60.2,71.6); c.moveTo(60.2-Math.cos(a)*1.3,72.6); c.lineTo(60.2+Math.cos(a)*1.3,72.6); }); E(ctx,60.2,71,.6,.6,P.bone); }
+  if(inStory){ const k = (now-S.storyT)/1000;
+    if(st.id==='mirror' && k>17){ ctx.globalAlpha = clamp((k-17)/2,0,1); E(ctx,96,30.4,.5,.5,P.bone); E(ctx,100,30.4,.5,.5,P.bone); ST(ctx,P.bone,.5,c => { c.moveTo(95,34.6); c.quadraticCurveTo(98,38,101.4,33.8); }); ctx.globalAlpha = 1; }
+    if(st.id==='door'){ ctx.fillStyle = LG(ctx,0,98,0,103,[0,A(P.red,0)],[1,A(P.red,.8)]); ctx.fillRect(4,98,20,5); ST(ctx,A(P.red,.7),.5,c => { c.moveTo(24.4,36); c.lineTo(24.4,102); }); }
+    if(st.id==='attic'){ E(ctx,89.3,44.7,.8,.8,P.red); E(ctx,89.1,44.5,.25,.25,P.goldhi); } }
+  // hidden things for this hunt
+  if(h) h.items.forEach(it => it.draw && it.draw(ctx,t));
 
   // candle flame
-  const fx = 48+(fl>.8?1:fl<.15?-1:0), tall = inStory && fl>.5 ? 5 : 4, fc = st && st.obj==='candle';
-  R(ctx,47,70-tall+1,3,tall-1,fc?P.red:P.gold); R(ctx,fx,70-tall,1,2,fc?P.gold:P.goldhi); px(ctx,48,69,P.goldhi);
-
-  // story object, lit from inside
-  if(inStory){ const [ox,oy] = OBJ[st.obj], k = (now-S.storyT)/1000;
-    if(st.obj==='mirror'){ ell(ctx,98,33,6,9,P.red3); if(k>18){ px(ctx,96,30,P.bone); px(ctx,100,30,P.bone); R(ctx,96,36,4,1,P.bone); px(ctx,95,35,P.bone); px(ctx,100,35,P.bone); px(ctx,101,34,P.bone); } }
-    if(st.obj==='musicbox'){ const a = Math.floor(t*3)%4; px(ctx,60,72,P.bone); R(ctx,59,73,3,1,P.ink2); px(ctx,[59,60,61,60][a],73,P.bone); px(ctx,60,73,P.bone); R(ctx,56,75,9,1,P.gold); }
-    if(st.obj==='painting'){ const gone = Math.sin(t*.8)>.2; if(gone){ R(ctx,122,22,18,16,P.red3); } else { px(ctx,130,28,P.red); px(ctx,132,28,P.red); } }
-    if(st.obj==='door'){ R(ctx,25,37,1,63,P.red); R(ctx,5,99,18,1,P.red); if(Math.floor(t*2)%5===0) R(ctx,20,66,2,2,P.goldhi); }
-    if(st.obj==='bear'){ px(ctx,89,44,P.red); R(ctx,90,52,3,3,P.red2); }
-  }
+  { const red = inStory && st.id==='candle', hgt = 4.4+fl*1.6+(inStory?1.2:0), lean = (fl-.5)*1.3;
+    FP(ctx,RG(ctx,48,69,.2,hgt,[0,P.white],[.35,red?'#d2424f':P.goldhi],[1,A(red?P.red:P.gold,.15)]),c => { c.moveTo(46.9,69.4); c.bezierCurveTo(46.4,67.4,47.6+lean,66.4,48+lean,69.4-hgt); c.bezierCurveTo(48.6+lean,66.6,49.6,67.4,49.1,69.4); c.quadraticCurveTo(48,70.4,46.9,69.4); }); }
 
   // toyhead, sliding out from under the lace
   if(S.slide>.01){
-    drawToy(tg,t,{ talk:S.talk && Math.floor(t*9)%2===0, blink:(t%3.7)<.14, wave:S.wave, look:S.phase==='cards'?-1:0 });
-    ctx.save(); ctx.beginPath(); ctx.rect(0,GAP.y,W,H-GAP.y); ctx.clip();
-    ctx.globalAlpha = clamp(S.slide*1.3,0,1);
-    ctx.drawImage(toy,TOY.x-32,Math.round(TOY.y-28+lerp(-12,8,S.slide)));
-    ctx.restore();
+    const tg = toyLayer.getContext('2d'); tg.setTransform(1,0,0,1,0,0); tg.clearRect(0,0,toyLayer.width,toyLayer.height); tg.setTransform(K,0,0,K,0,0);
+    const look = S.phase==='hunt' ? clamp((S.lx-TOY.x)/30,-1,1) : S.phase==='cards' ? -.8 : 0;
+    paintToy(tg,t,{ talk:S.talk && Math.floor(t*9)%2===0, blink:(t%3.7)<.14, wave:S.wave, look, rest:.25 });
+    ctx.save(); ctx.beginPath(); ctx.rect(0,GAP.y,W,H-GAP.y); ctx.clip(); ctx.globalAlpha = clamp(S.slide*1.3,0,1);
+    ctx.drawImage(toyLayer,TOY.x-35,TOY.y-30+lerp(-12,8,S.slide),70,84); ctx.restore();
   }
 
-  // darkness, with holes punched by the flashlight, the candle, and his face
-  dg.globalCompositeOperation = 'source-over'; dg.clearRect(0,0,W,H);
-  dg.globalAlpha = S.phase==='title' ? 1 : inStory ? .76+fl*.08 : .84; dg.fillStyle = P.ink; dg.fillRect(0,0,W,H); dg.globalAlpha = 1;
+  // darkness, with soft holes for the flashlight, the candle, his face, and whatever was found
+  dg.globalCompositeOperation = 'source-over'; dg.clearRect(0,0,dark.width,dark.height);
+  dg.fillStyle = A(P.ink,S.phase==='title' ? 1 : inStory ? .68+fl*.05 : .82); dg.fillRect(0,0,dark.width,dark.height);
   dg.globalCompositeOperation = 'destination-out';
-  const cr = (inStory?19:11)+Math.round(fl*3);
-  hole(dg,48,68,cr,.3); hole(dg,48,68,cr-5,.45); hole(dg,48,68,cr-8,.8);
-  if(S.phase!=='title'){ const lx = Math.round(S.lx), ly = Math.round(S.ly);
-    hole(dg,lx,ly,29,.3); hole(dg,lx,ly,24,.5); hole(dg,lx,ly,18,1); }
-  if(S.slide>.01){ hole(dg,TOY.x,TOY.y+12,36,.35*S.slide); hole(dg,TOY.x,TOY.y+10,28,.85*S.slide); }
-  if(inStory){ const [ox,oy] = OBJ[st.obj]; hole(dg,ox,oy,15,.4); hole(dg,ox,oy,10,.8); }
-  ctx.drawImage(dark,0,0);
+  hole(48,68,(inStory?34:19)+fl*4,.8);
+  if(S.phase!=='title') hole(S.lx,S.ly,R*1.2,1);
+  if(S.slide>.01) hole(TOY.x,TOY.y+10,40,.9*S.slide);
+  if(h) h.items.forEach((it,i) => { if(h.found.has(i)) hole(it.x,it.y,it.r+5,.75); });
+  ctx.drawImage(dark,0,0,W,H);
 
-  // warm and red light on top
-  halo(48,68,cr-4,P.gold,.05+fl*.03);
-  if(inStory){ const [ox,oy] = OBJ[st.obj], p = .5+.5*Math.sin(t*2.6);
-    halo(ox,oy,16,P.red,.1+.1*p); halo(ox,oy,10,P.red,.14+.12*p); }
+  // light on top: warm for the candle and the found things, red while he tells the story
+  ctx.globalCompositeOperation = 'lighter';
+  glow(ctx,48,67,22+fl*5,P.gold,.13+fl*.06);
+  if(S.phase!=='title') glow(ctx,S.lx,S.ly,R,P.bone,.05);
+  if(h) h.items.forEach((it,i) => { if(!h.found.has(i)) return; const p = .5+.5*Math.sin(t*2.6+i), pop = clamp(1-(now-h.at[i])/600,0,1);
+    glow(ctx,it.x,it.y,it.r+6+pop*10,inStory?P.red:P.gold,inStory ? .34+.2*p : .16+.3*pop); });
+  if(inStory){ const m = mainOf(st); glow(ctx,m.x,m.y,m.r+12,P.red,.25+.15*Math.sin(t*2.2)); }
+  ctx.globalCompositeOperation = 'source-over';
+  if(h) h.items.forEach((it,i) => { if(!h.found.has(i)) return; ST(ctx,A(inStory?P.red:P.gold,.55),.5,c => { c.arc(it.x,it.y,it.r+1+Math.sin(t*2+i)*.6,0,TAU); }); });
+  // if the player is stuck, the next thing glints
+  if(S.phase==='hunt' && now-h.last>HINT_AFTER[night()-1]*1000){ const i = h.items.findIndex((_,k) => !h.found.has(k)), it = h.items[i], p = Math.max(0,Math.sin(t*3));
+    if(it){ ctx.globalAlpha = p; ST(ctx,P.goldhi,.5,c => { c.moveTo(it.x-3,it.y); c.lineTo(it.x+3,it.y); c.moveTo(it.x,it.y-3); c.lineTo(it.x,it.y+3); }); E(ctx,it.x,it.y,.8,.8,P.white); ctx.globalAlpha = 1; } }
 
   // two eyes in the dark
   const lit = S.phase==='dark' && overEyes(S.lx,S.ly);
-  S.eyes = clamp(S.eyes+(lit?.07:-.12),0,1);
+  S.eyes = clamp(S.eyes+(lit?.06:-.1),0,1);
   if(S.phase==='dark' && S.eyes>.05){
-    const bl = (t%2.9)<.13 || ((t+1.3)%7.1)<.12, open = bl ? 0 : S.eyes;
-    const look = clamp(Math.round((S.lx-TOY.x)/14),-1,1), ey = TOY.y-28-12+30;
-    [-7,7].forEach(dx => { const ex = TOY.x+dx;
-      if(open<.3){ R(ctx,ex-3,ey+1,7,1,P.bone3); return; }
-      const top = open<.7 ? 1 : 0;
-      for(let dy=top;dy<=3;dy++){ const w = Math.round(5*Math.sqrt(1-(dy*dy)/16)); R(ctx,ex-w,ey+dy,w*2+1,1,P.bone); }
-      R(ctx,ex-1+look,ey+top,3,3-top,P.gold); px(ctx,ex+look,ey+1,P.ink); });
+    const bl = (t%2.9)<.13 || ((t+1.3)%7.1)<.12, open = bl ? .08 : S.eyes;
+    const look = clamp((S.lx-TOY.x)/14,-1,1), ey = TOY.y-10;
+    [-7.2,7.2].forEach(dx => { const ex = TOY.x+dx; glow(ctx,ex,ey,9,P.gold,.12*open);
+      ctx.save(); ctx.beginPath(); ctx.ellipse(ex,ey,5.2,4.3*open,0,0,TAU); ctx.clip();
+      ctx.fillStyle = RG(ctx,ex,ey,.5,6,[0,P.white],[1,P.bone2]); ctx.fillRect(ex-6,ey-5,12,10);
+      E(ctx,ex+look*1.4,ey+.6,2.5,2.5,RG(ctx,ex+look*1.4,ey+.6,.2,2.6,[0,P.goldhi],[.6,P.gold],[1,P.gold2])); E(ctx,ex+look*1.4,ey+.6,1.05,1.05,P.ink);
+      ctx.fillStyle = P.ink; ctx.fillRect(ex-6,ey-5,12,2.6); ctx.restore(); });
   }
-  // an idle creak now and then, so the bed gives itself away
+  // vignette and grain
+  ctx.fillStyle = RG(ctx,W/2,H*.56,H*.3,H*.8,[0,A(P.ink,0)],[1,A(P.ink,.6)]); ctx.fillRect(0,0,W,H);
+  if(grain){ ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha = .08; ctx.fillStyle = grain; ctx.fillRect(0,0,cv.width,cv.height); ctx.globalAlpha = 1; }
   if(S.phase==='dark' && now-S.lastCreak>16000){ S.lastCreak = now; Snd.sfx('creak'); }
   requestAnimationFrame(draw);
 }
 
 /* ───────────── fit ───────────── */
 function fit(){ const st = $('stage'), k = Math.min(st.clientWidth/W, st.clientHeight/H); if(!(k>0)) return;
-  const s = k>=3 ? Math.floor(k*2)/2 : k;
-  frame.style.width = (W*s)+'px'; frame.style.height = (H*s)+'px'; document.documentElement.style.setProperty('--u',s+'px'); }
+  frame.style.width = (W*k)+'px'; frame.style.height = (H*k)+'px'; document.documentElement.style.setProperty('--u',k+'px');
+  const dpr = Math.min(window.devicePixelRatio||1,2), nk = Math.min(Math.round(k*dpr*4)/4,9);
+  if(nk===K && roomLayer.width>8) return; K = nk;
+  cv.width = Math.round(W*K); cv.height = Math.round(H*K);
+  roomLayer = mk(cv.width,cv.height); const rg = roomLayer.getContext('2d'); rg.setTransform(K,0,0,K,0,0); paintRoom(rg);
+  toyLayer = mk(Math.round(70*K),Math.round(84*K));
+  const n = mk(128,128), ng = n.getContext('2d'), id = ng.createImageData(128,128);
+  for(let i=0;i<128*128;i++){ const v = hash(i*1.7)>.5 ? 232 : 11; id.data[i*4] = v; id.data[i*4+1] = v*.97; id.data[i*4+2] = v*.92; id.data[i*4+3] = hash(i*3.3)*255; }
+  ng.putImageData(id,0,0); grain = ctx.createPattern(n,'repeat'); }
 window.addEventListener('resize',fit); new ResizeObserver(fit).observe($('stage')); fit();
 setMode(Snd.mode);
 requestAnimationFrame(draw);
-window.__utb = { S, call, tell, STORIES };
+window.__utb = { S, call, tell, find, STORIES, HUNT };
 })();
 </script>

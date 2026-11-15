@@ -6,6 +6,18 @@
 - Original downloads: `audio/*.mp3`. Smaller re-encodes used in the page: `build/*.mp3`.
 - Word timings used for caption sync: `audio/timings.json` (from the ElevenLabs speech-to-text node, 0 credits).
 
+## How a night works
+
+There are six nights, one story each. Each night:
+
+1. Shine the flashlight under the bed and tap the eyes; Toyhead slides out and offers up to three of the untold stories.
+2. Pick a card. Before he tells it, find three things from that story in the room with the flashlight (the caption lists them). No new audio was generated for this; finding something plays the first seconds of `music-box.mp3`.
+3. He tells the story while the three things and the room glow red, says goodnight and slides back.
+
+Each night the flashlight is a little smaller. If you are stuck, the next thing glints after 9 to 22 seconds (longer on later nights). After the sixth story the nights can be started again.
+
+The look is painted in code (soft gradients, no pixels) using only tints of ink, bone, blood red and candle gold.
+
 ## The switch
 
 - **BEEPS** ("before"): browser oscillators only, captions revealed on a timer.
