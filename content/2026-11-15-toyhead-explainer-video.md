@@ -23,7 +23,7 @@
 
 ## اسکریپت
 
-هر خط یک کلیپ جدا است، چون هر کلیپ جداگانه صدا و lipsync می‌گیرد. تگ‌های داخل کروشه فقط برای ElevenLabs هستند و گفته نمی‌شوند.
+هر خط یک کلیپ جدا است.
 
 | کلیپ | زمان | دیالوگ | حرکت | متن روی تصویر |
 |---|---|---|---|---|
@@ -35,14 +35,14 @@
 | ✂ | 30 → 36s | *(split-screen: v1 چپ، v2 راست، با صدای خود بازی؛ تو ضبط می‌کنی)* | | `Fable alone` / `+ ElevenLabs MCP` |
 | C6 | 36 → 40s | `[warmly] Which one would you let under your bed?` | کمی به دوربین نزدیک می‌شود، نیم‌لبخند گرم، یک مکث در تماس چشمی | — |
 
-حدود 530 کردیت برای یک برداشت کامل (حدود 1 کردیت برای هر نویسه، با تگ‌ها). قبل از ساخت با `estimate_only` تأیید می‌شود.
+تگ‌های کروشه‌ای فقط برای ساخت صدا با TTS بودند. چون صدا را Flow می‌گوید و تو جایگزین می‌کنی، لازم نیستند.
 
 ## پرامپت برای Agent در Google Flow
 
-اول شیت چهره را در Characters آپلود کن، بعد این را بفرست:
+Flow خودش حرف می‌زند تا حس و ریتم طبیعی باشد؛ بعد صدا را خودت با ElevenLabs جایگزین می‌کنی. اول شیت چهره را در Characters آپلود کن، بعد این را بفرست:
 
 ```
-Create 6 short vertical video clips (9:16, 1080x1920), each at most 8 seconds, of the man in my attached face sheet. Do NOT generate any speech, voice or music: I will add my own voice later with lip-sync. His mouth should still move naturally, as if he is speaking casually to the camera.
+Create 6 short vertical video clips (9:16, 1080x1920) of the man in my attached face sheet, talking to the camera. He SPEAKS the lines below out loud with natural lip movement, in English, in a calm, dry, slightly tired, deadpan voice, at an unhurried pace, with the pauses marked by "...". Record clean close-mic speech only: no background music, no sound effects, no subtitles, no captions, no on-screen text.
 
 First make one still frame of the setup and show it to me. Only after I approve it, animate the clips.
 
@@ -54,24 +54,33 @@ CAMERA: Close-up, chest-up, eye level, like a webcam selfie video, locked off. I
 
 PERFORMANCE: Relaxed, dry humour, speaking straight to camera. Small natural movements only: blinks, small nods, a tiny smirk, an eyebrow raise. No big gestures.
 
-CLIPS:
-1. (7s) Calm look into the camera, a small nod, a tiny smirk, then a beat of stillness.
-2. (7s) Raises one finger as if counting, a dry shrug at the end, a half smile.
-3. (7s) Glances aside for a moment, then back to camera with a small amused smile.
-4. (7s) Counts quickly on his fingers, one eyebrow lifts at the end.
-5. (3s) Tilts his head toward the left of the frame with a look that says "go ahead".
-6. (4s) Leans slightly toward the camera, warm half smile, holds eye contact for a beat at the end.
+CLIPS (he says each line exactly as written):
+1. (8s) A calm look into the camera, a small nod, a tiny smirk, then he says: "I built a monster that lives under your bed. He doesn't scare you... He tells you gothic bedtime stories."
+2. (8s) He raises one finger as if counting, then a dry shrug and a half smile, and says: "First version: Claude Fable on its own. A flashlight, six stories, one sad monster. It worked... It also beeped."
+3. (8s) He glances aside for a moment, then back to camera with a small amused smile, and says: "Then I plugged in the Eleven Labs M C P and gave him my voice. A clone of me, reading every story."
+4. (8s) He counts quickly on his fingers, one eyebrow lifts at the end, and he says: "Twenty-one audio files, one take each. A creaking bed, a heartbeat, a lullaby... Even the captions follow his voice."
+5. (4s) He tilts his head toward the left of the frame with a look that says "go ahead", and says: "Watch both."
+6. (4s) He leans slightly toward the camera with a warm half smile, and says: "Which one would you let under your bed?"
 ```
 
-اگر Flow عکس چهره را رد کرد: از Frames to video با عکس روبه‌رو به‌عنوان فریم اول استفاده کن، یا کلیپ‌ها را خودت فیلم بگیر و من فقط زیرنویس و موشن‌دیزاین را می‌سازم.
+- «Eleven Labs M C P» با فاصله نوشته شده تا Flow درست تلفظ کند. روی تصویر همان `ElevenLabs MCP` می‌ماند.
+- Flow کلیپ‌ها را 4، 6 یا 8 ثانیه می‌سازد. کلیپ‌های 8 ثانیه‌ای را موقع تدوین کوتاه کن.
+- اگر Flow عکس چهره را رد کرد: Frames to video با عکس روبه‌رو به‌عنوان فریم اول، یا کلیپ‌ها را خودت فیلم بگیر.
+
+## جایگزینی صدا با ElevenLabs
+
+ساده‌ترین راه Voice Changer (speech to speech) است، نه lipsync: صدای هر کلیپ را با صدای کلون‌شده‌ی خودت جایگزین کن. زمان‌بندی، مکث‌ها و حس همان صدای Flow می‌ماند، پس دهان هم همچنان جور است. این‌ها را رعایت کن:
+
+- Voice Changer کلمه‌ها و تلفظ را عوض نمی‌کند، فقط صدا را. پس متن را قبل از ساخت کلیپ‌ها نهایی کن.
+- اگر صدای Flow نویز اتاق یا موسیقی دارد، اول Voice Isolator.
+- افکت‌ها و موسیقی بازی در split-screen با صدای خود بازی می‌آیند.
 
 ## ترتیب کار
 
 1. اسکریپت بالا را تأیید یا ویرایش کن.
-2. Flow Agent، 6 کلیپ می‌سازد. صدای خودش را نگه ندار یا مهم نیست.
-3. من 6 صدا را با voice_id خودت با ElevenLabs MCP می‌سازم و زمان کلمه‌ها را می‌گیرم.
-4. کلیپ‌ها را در flow ElevenLabs آپلود می‌کنی و من lipsync را اجرا می‌کنم (`sync-lipsync-v3`).
-5. چسباندن، split-screen و زیرنویس با ffmpeg؛ بعد موشن‌دیزاین متن‌ها.
+2. Flow Agent، 6 کلیپ با صدا می‌سازد.
+3. صدای هر کلیپ را با Voice Changer ElevenLabs و صدای خودت جایگزین کن.
+4. چسباندن، split-screen و زیرنویس با ffmpeg (زمان کلمه‌ها را می‌توانم از speech-to-text بگیرم)؛ بعد موشن‌دیزاین متن‌ها.
 
 ## پست X (پیش‌نویس)
 
